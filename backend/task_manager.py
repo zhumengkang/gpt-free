@@ -250,17 +250,15 @@ class TaskManager:
             if attempt > 0:
                 self._push_log(f"[#{index}] 第 {attempt + 1}/{max_attempts} 次尝试...")
 
-            # 智能选择代理
+            # 智能选择代理：代理池优先，default_proxy 只作兜底
             proxy_url = None
-            if default_proxy:
-                proxy_url = default_proxy
-            elif enabled_proxies:
-                # 使用代理池智能选择，排除本次已失败的代理
+            if enabled_proxies:
                 proxy_url = self._proxy_pool.get_random_url(exclude=used_proxies)
                 if not proxy_url:
-                    # 所有代理都试过了，清空重来
                     used_proxies.clear()
                     proxy_url = self._proxy_pool.get_random_url()
+            if not proxy_url and default_proxy:
+                proxy_url = default_proxy
 
             if proxy_url:
                 self._push_log(f"[#{index}] 使用代理: {proxy_url}")
