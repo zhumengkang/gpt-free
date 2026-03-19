@@ -27,10 +27,12 @@ def main():
     cfg.STATIC_DIR = os.path.join(base, "frontend", "dist")
     cfg.DEFAULT_PROVIDERS_PATH = os.path.join(base, "backend", "default_providers.json")
 
+    # 直接导入 app 对象，不用字符串（PyInstaller 下字符串导入会失败）
+    from backend.main import app
     import uvicorn
     print(f"GPT-Free starting on http://0.0.0.0:{cfg.PORT}")
     print(f"Data dir: {exe_dir}")
-    uvicorn.run("backend.main:app", host=cfg.HOST, port=cfg.PORT)
+    uvicorn.run(app, host=cfg.HOST, port=cfg.PORT)
 
 if __name__ == "__main__":
     main()
