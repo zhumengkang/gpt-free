@@ -133,9 +133,11 @@ class TempMailClient:
         headers = self._headers()
         headers["authorization"] = f"Bearer {self.jwt}"
 
-        self._log(f"等待验证码 (超时: {timeout}s)")
-        self._log(f"邮箱: {self.email_address}")
-        self._log(f"提供商: {self.provider['name']} ({self.provider['base_url']})")
+        self._log(f"等待验证码 (超时: {timeout}s, 邮箱: {self.email_address})")
+
+        # 先等 5 秒再开始查，邮件不会那么快到
+        self._log("等待 5s 后开始查收邮件...")
+        time.sleep(5)
 
         start = time.time()
         attempt = 0

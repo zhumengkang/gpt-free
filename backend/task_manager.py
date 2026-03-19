@@ -205,6 +205,10 @@ class TaskManager:
             "timed out",
             "TimeoutError",
             "Sentinel 请求失败",
+            "验证码超时",
+            "获取验证码超时",
+            "invalid_auth_step",
+            "Invalid authorization step",
         ]
 
         # 需要换代理的错误（代理相关问题）
@@ -229,6 +233,8 @@ class TaskManager:
         _email_errors = [
             "unsupported_email",
             "not supported",
+            "验证码超时",
+            "获取验证码超时",
         ]
 
         max_attempts = 5  # 增加到5次
