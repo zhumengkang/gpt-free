@@ -1,0 +1,107 @@
+name: Build Releases
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            name: linux-x64
+          - os: macos-latest
+            name: macos-x64
+          - os: windows-latest
+            name: windows-x64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Build Frontend
+      run: |
+        cd frontend
+        npm install
+        npm run build
+
+    - name: Install Python Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build (Linux/macOS)
+      if: runner.os != 'Windows'
+      run: |
+        pyinstaller --name gpt-free \
+          --onefile \
+          --add-data "frontend/dist:frontend/dist" \
+          --add-data "backend/default_providers.json:backend" \
+          --hidden-import uvicorn.logging \
+          --hidden-import uvicorn.loops \
+          --hidden-import uvicorn.loops.auto \
+          --hidden-import uvicorn.protocols \
+          --hidden-import uvicorn.protocols.http \
+          --hidden-import uvicorn.protocols.http.auto \
+          --hidden-import uvicorn.protocols.websockets \
+          --hidden-import uvicorn.protocols.websockets.auto \
+          --hidden-import uvicorn.lifespan \
+          --hidden-import uvicorn.lifespan.on \
+          --hidden-import uvicorn.lifespan.off \
+          --hidden-import aiosqlite \
+          --hidden-import websockets \
+          --hidden-import httpx \
+          --hidden-import httpx._transports \
+          --hidden-import httpx._transports.default \
+          --collect-all curl_cffi \
+          --collect-all cffi \
+          run.py
+
+    - name: Build (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        pyinstaller --name gpt-free `
+          --onefile `
+          --add-data "frontend\dist;frontend\dist" `
+          --add-data "backend\default_providers.json;backend" `
+          --hidden-import uvicorn.logging `
+          --hidden-import uvicorn.loops `
+          --hidden-import uvicorn.loops.auto `
+          --hidden-import uvicorn.protocols `
+          --hidden-import uvicorn.protocols.http `
+          --hidden-import uvicorn.protocols.http.auto `
+          --hidden-import uvicorn.protocols.websockets `
+          --hidden-import uvicorn.protocols.websockets.auto `
+          --hidden-import uvicorn.lifespan `
+          --hidden-import uvicorn.lifespan.on `
+          --hidden-import uvicorn.lifespan.off `
+          --hidden-import aiosqlite `
+          --hidden-import websockets `
+          --hidden-import httpx `
+          --hidden-import httpx._transports `
+          --hidden-import httpx._transports.default `
+          --collect-all curl_cffi `
+          --collect-all cffi `
+          run.py
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: gpt-free-${{ matrix.name }}
+        path: dist/gpt-free*
+        if-no-files-found: error
+        retention-days: 90
