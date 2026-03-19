@@ -209,6 +209,7 @@ class TaskManager:
             "获取验证码超时",
             "invalid_auth_step",
             "Invalid authorization step",
+            "代理不可用",
         ]
 
         # 需要换代理的错误（代理相关问题）
@@ -227,9 +228,8 @@ class TaskManager:
             "403",
             "timed out",
             "Sentinel 请求失败",
+            "代理不可用",
         ]
-
-        # 需要换邮箱提供商的错误
         _email_errors = [
             "unsupported_email",
             "not supported",

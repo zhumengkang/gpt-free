@@ -254,23 +254,31 @@ def run_register(
     s = curl_requests.Session(proxies=proxies, impersonate="chrome", timeout=45)
 
     try:
-        # 1. 检查网络
-        log("[1/14] 检查网络连接...")
-        trace = _safe_request("网络检查", lambda: s.get("https://cloudflare.com/cdn-cgi/trace", timeout=30), log)
-        loc_match = re.search(r"^loc=(.+)$", trace.text, re.MULTILINE)
-        loc = loc_match.group(1) if loc_match else "未知"
-        log(f"当前 IP 所在地: {loc}")
+        # 0. 预检代理连通性
+        if proxy:
+            log("[0/14] 预检代理连通性...")
+            try:
+                trace = s.get("https://cloudflare.com/cdn-cgi/trace", timeout=15)
+                if trace.status_code != 200:
+                    raise RuntimeError(f"代理预检失败: HTTP {trace.status_code}")
+                loc_match = re.search(r"^loc=(.+)$", trace.text, re.MULTILINE)
+                loc = loc_match.group(1) if loc_match else "未知"
+                log(f"代理可用，IP 所在地: {loc}")
+            except Exception as e:
+                raise RuntimeError(f"代理不可用: {str(e)[:150]}")
+        else:
+            log("[0/14] 直连模式，跳过代理预检")
 
-        # 2. 创建临时邮箱
-        log(f"[2/14] 创建临时邮箱 (提供商: {mail_client.provider['name']})...")
+        # 1. 创建临时邮箱
+        log(f"[1/14] 创建临时邮箱 (提供商: {mail_client.provider['name']})...")
         email = mail_client.create_email()
         log(f"临时邮箱: {email}")
 
-        # 3. 生成 OAuth URL
+        # 2. 生成 OAuth URL
         oauth = generate_oauth_url()
 
-        # 4. 访问授权页面
-        log("[3/14] 访问授权页面...")
+        # 3. 访问授权页面
+        log("[2/14] 访问授权页面...")
         auth_resp = _safe_request("授权页面", lambda: s.get(oauth.auth_url, timeout=30), log)
         log(f"授权页面状态: {auth_resp.status_code}")
 
@@ -282,8 +290,8 @@ def run_register(
             raise RuntimeError("未获取到 Device ID (oai-did cookie)，可能是代理被 Cloudflare 拦截")
         log(f"Device ID: {did}")
 
-        # 5. Sentinel Token
-        log("[4/14] 获取 Sentinel Token...")
+        # 4. Sentinel Token
+        log("[3/14] 获取 Sentinel Token...")
         sen_req_body = f'{{"p":"","id":"{did}","flow":"authorize_continue"}}'
 
         def _get_sentinel():
@@ -307,8 +315,8 @@ def run_register(
         sen_token = sen_resp.json()["token"]
         sentinel = f'{{"p": "", "t": "", "c": "{sen_token}", "id": "{did}", "flow": "authorize_continue"}}'
 
-        # 6. 提交注册表单
-        log(f"[5/14] 提交注册表单: {email}")
+        # 5. 提交注册表单
+        log(f"[4/14] 提交注册表单: {email}")
         signup_body = f'{{"username":{{"value":"{email}","kind":"email"}},"screen_hint":"signup"}}'
 
         def _signup():
@@ -332,8 +340,8 @@ def run_register(
         if signup_resp.status_code not in (200, 201, 302):
             log(f"注册表单返回非200: {signup_resp.status_code} {signup_resp.text[:200]}（继续尝试）")
 
-        # 7. 提交密码
-        log("[6/14] 提交密码...")
+        # 6. 提交密码
+        log("[5/14] 提交密码...")
         register_body = json.dumps({"password": password, "username": email})
 
         def _register():
@@ -355,8 +363,8 @@ def run_register(
         if pwd_resp.status_code not in (200, 201, 302):
             log(f"密码提交返回非200: {pwd_resp.status_code} {pwd_resp.text[:200]}（继续尝试）")
 
-        # 8. 发送验证码
-        log("[7/14] 请求发送验证码...")
+        # 7. 发送验证码
+        log("[6/14] 请求发送验证码...")
 
         def _send_otp():
             return s.get(
@@ -373,13 +381,13 @@ def run_register(
         if otp_resp.status_code not in (200, 201, 302):
             log(f"验证码发送返回非200: {otp_resp.status_code} {otp_resp.text[:200]}（继续尝试）")
 
-        # 9. 获取验证码
-        log(f"[8/14] 等待验证码 (超时: {email_poll_timeout}s)...")
+        # 8. 获取验证码
+        log(f"[7/14] 等待验证码 (超时: {email_poll_timeout}s)...")
         code = mail_client.wait_for_code(timeout=email_poll_timeout, keyword="openai")
         log(f"验证码: {code}")
 
-        # 10. 验证验证码
-        log("[9/14] 提交验证码...")
+        # 9. 验证验证码
+        log("[8/14] 提交验证码...")
         code_body = f'{{"code":"{code}"}}'
 
         def _validate_otp():
@@ -399,8 +407,8 @@ def run_register(
         if code_resp.status_code != 200:
             raise RuntimeError(f"验证码校验失败 ({code_resp.status_code}): {code_resp.text[:200]}")
 
-        # 11. 创建账户
-        log("[10/14] 创建账户...")
+        # 10. 创建账户
+        log("[9/14] 创建账户...")
         create_body = '{"name":"Neo","birthdate":"2000-02-20"}'
 
         def _create_account():
@@ -420,8 +428,8 @@ def run_register(
         if create_resp.status_code != 200:
             raise RuntimeError(f"账户创建失败: {create_resp.text[:200]}")
 
-        # 12. 获取 workspace
-        log("[11/14] 获取 workspace...")
+        # 11. 获取 workspace
+        log("[10/14] 获取 workspace...")
         auth_cookie = s.cookies.get("oai-client-auth-session")
         if not auth_cookie:
             raise RuntimeError("未能获取到授权 Cookie")
@@ -445,8 +453,8 @@ def run_register(
         if not workspace_id:
             raise RuntimeError("无法解析 workspace_id")
 
-        # 13. 选择 workspace
-        log(f"[12/14] 选择 workspace: {workspace_id}")
+        # 12. 选择 workspace
+        log(f"[11/14] 选择 workspace: {workspace_id}")
         select_body = f'{{"workspace_id":"{workspace_id}"}}'
 
         def _select_workspace():
@@ -468,8 +476,8 @@ def run_register(
         if not continue_url:
             raise RuntimeError("workspace/select 响应里缺少 continue_url")
 
-        # 14. 跟随重定向链
-        log("[13/14] 跟随重定向链...")
+        # 13. 跟随重定向链
+        log("[12/14] 跟随重定向链...")
         current_url = continue_url
         for redir_i in range(8):
             def _follow_redirect(url=current_url):
@@ -485,7 +493,7 @@ def run_register(
 
             next_url = urllib.parse.urljoin(current_url, location)
             if "code=" in next_url and "state=" in next_url:
-                log("[14/14] 获取到 callback URL，交换 token...")
+                log("[13/14] 获取到 callback URL，交换 token...")
                 token_info = submit_callback_url(
                     callback_url=next_url,
                     code_verifier=oauth.code_verifier,

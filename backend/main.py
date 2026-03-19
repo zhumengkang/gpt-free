@@ -87,6 +87,29 @@ async def debug_ws():
     }
 
 
+@app.get("/api/debug/check-mail")
+async def debug_check_mail(base_url: str, jwt: str):
+    """调试：手动查看邮箱里的邮件，用于排查验证码收不到的问题
+    用法: /api/debug/check-mail?base_url=https://lsmail.zhiyu.cloudns.be&jwt=xxx
+    """
+    import httpx
+    try:
+        async with httpx.AsyncClient(verify=False, timeout=15) as client:
+            resp = await client.get(
+                f"{base_url}/api/mails?limit=20&offset=0",
+                headers={
+                    "accept": "application/json, text/plain, */*",
+                    "authorization": f"Bearer {jwt}",
+                },
+            )
+            return {
+                "status": resp.status_code,
+                "data": resp.json() if resp.status_code == 200 else resp.text[:500],
+            }
+    except Exception as e:
+        return {"error": str(e)}
+
+
 # 前端静态文件 + SPA fallback
 _index_html = os.path.join(STATIC_DIR, "index.html") if os.path.isdir(STATIC_DIR) else None
 

@@ -81,6 +81,8 @@ async def init_db():
     await db.commit()
     # 兼容旧数据库：补齐 proxies 表缺失的列
     await _migrate_proxies_columns(db)
+    # 修正旧数据库中过短的 email_poll_timeout
+    await _migrate_email_poll_timeout(db)
 
 
 async def _migrate_proxies_columns(db: aiosqlite.Connection):
@@ -97,6 +99,15 @@ async def _migrate_proxies_columns(db: aiosqlite.Connection):
         if col not in existing:
             await db.execute(f"ALTER TABLE proxies ADD COLUMN {col} {col_type}")
     await db.commit()
+
+
+async def _migrate_email_poll_timeout(db: aiosqlite.Connection):
+    """旧数据库 email_poll_timeout 太短(35s)，自动升到 120s"""
+    cursor = await db.execute("SELECT email_poll_timeout FROM settings WHERE id = 1")
+    row = await cursor.fetchone()
+    if row and row[0] < 60:
+        await db.execute("UPDATE settings SET email_poll_timeout = 120 WHERE id = 1")
+        await db.commit()
 
 
 async def import_default_providers():
