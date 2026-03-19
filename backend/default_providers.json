@@ -1,0 +1,1182 @@
+[
+  {
+    "name": "temp.zhiyu.cloudns.be",
+    "base_url": "https://lsmail.zhiyu.cloudns.be",
+    "origin": "http://temp.zhiyu.cloudns.be"
+  },
+  {
+    "name": "temp-mail-web.xxecy.eu.org",
+    "base_url": "https://temp-mail.xxecy.eu.org",
+    "origin": "https://temp-mail-web.xxecy.eu.org"
+  },
+  {
+    "name": "temp.edu.luxe",
+    "base_url": "https://temp.edu.luxe",
+    "origin": "https://temp.edu.luxe"
+  },
+  {
+    "name": "webmail.wyuzhou.dpdns.org",
+    "base_url": "https://mail-api.279316.xyz",
+    "origin": "https://webmail.wyuzhou.dpdns.org"
+  },
+  {
+    "name": "email.irenfeng.com",
+    "base_url": "https://email-api.irenfeng.com",
+    "origin": "https://email.irenfeng.com"
+  },
+  {
+    "name": "email.newweidu.xyz:2096",
+    "base_url": "https://emailapi.newweidu.xyz",
+    "origin": "https://email.newweidu.xyz:2096"
+  },
+  {
+    "name": "001e.cn:2083",
+    "base_url": "https://mailapi.001e.cn",
+    "origin": "https://001e.cn:2083"
+  },
+  {
+    "name": "mail.futrue.ggff.net",
+    "base_url": "https://api.futrue.ggff.net",
+    "origin": "http://mail.futrue.ggff.net"
+  },
+  {
+    "name": "mail.rayna.eu.org",
+    "base_url": "https://temp-mail.unbugs.workers.dev",
+    "origin": "https://mail.rayna.eu.org"
+  },
+  {
+    "name": "email.linli.eu.org",
+    "base_url": "https://emailapi.linli.eu.org",
+    "origin": "https://email.linli.eu.org"
+  },
+  {
+    "name": "temp-mail.mcneko.com",
+    "base_url": "https://temp-mail-worker.azqaq.top",
+    "origin": "https://temp-mail.mcneko.com"
+  },
+  {
+    "name": "email.cdc.edu.kg",
+    "base_url": "https://tempmail.cdc.edu.kg",
+    "origin": "https://email.cdc.edu.kg"
+  },
+  {
+    "name": "www.tempmailsub.com",
+    "base_url": "https://api.email.tempmailsub.com",
+    "origin": "http://www.tempmailsub.com"
+  },
+  {
+    "name": "mail.minimaxpix.my",
+    "base_url": "http://apimail.minimaxpix.my",
+    "origin": "https://mail.minimaxpix.my"
+  },
+  {
+    "name": "temp-email.right-ai.com",
+    "base_url": "https://temp-email-api.right-ai.com",
+    "origin": "https://temp-email.right-ai.com"
+  },
+  {
+    "name": "tmail.dotink.tech",
+    "base_url": "https://tmail-api.dotink.tech",
+    "origin": "http://tmail.dotink.tech"
+  },
+  {
+    "name": "mail.03275851.xyz",
+    "base_url": "https://apimail.03275851.xyz",
+    "origin": "http://mail.03275851.xyz"
+  },
+  {
+    "name": "mail1.niubea.online",
+    "base_url": "https://aimail.baotifen.com.cn",
+    "origin": "http://mail1.niubea.online"
+  },
+  {
+    "name": "webmail.7786.pp.ua",
+    "base_url": "https://cfmail.7786.pp.ua",
+    "origin": "https://webmail.7786.pp.ua"
+  },
+  {
+    "name": "cfmail.8699.pp.ua",
+    "base_url": "https://cfmail.8699.pp.ua",
+    "origin": "https://cfmail.8699.pp.ua"
+  },
+  {
+    "name": "uhoox.cc",
+    "base_url": "https://mail-api.uhoox.cc",
+    "origin": "https://uhoox.cc"
+  },
+  {
+    "name": "mail.513140.xyz",
+    "base_url": "https://mailapi.513140.xyz",
+    "origin": "http://mail.513140.xyz"
+  },
+  {
+    "name": "mail.wumeng.online",
+    "base_url": "https://mailapi.wumeng.online",
+    "origin": "https://mail.wumeng.online"
+  },
+  {
+    "name": "mail.fdpp.de",
+    "base_url": "https://apimail.fdpp.de",
+    "origin": "http://mail.fdpp.de"
+  },
+  {
+    "name": "anron.space",
+    "base_url": "https://temp-mail.maodouzhajiang.workers.dev",
+    "origin": "http://anron.space"
+  },
+  {
+    "name": "mail.19900624.xyz",
+    "base_url": "https://email-api.ys624mg.workers.dev",
+    "origin": "https://mail.19900624.xyz"
+  },
+  {
+    "name": "mail.999902.xyz:2087",
+    "base_url": "https://apimail.999902.xyz",
+    "origin": "https://mail.999902.xyz:2087"
+  },
+  {
+    "name": "mail.187231.xyz",
+    "base_url": "https://temp-email-api.96antarctica.workers.dev",
+    "origin": "https://mail.187231.xyz"
+  },
+  {
+    "name": "admin.mail.778848.xyz",
+    "base_url": "https://mail-backend.gxmq.workers.dev",
+    "origin": "https://admin.mail.778848.xyz"
+  },
+  {
+    "name": "luozuo.de5.net",
+    "base_url": "https://mail-api.luozuo.de5.net",
+    "origin": "http://luozuo.de5.net"
+  },
+  {
+    "name": "scarborough.eu.org",
+    "base_url": "https://api.scarborough.eu.org",
+    "origin": "https://scarborough.eu.org"
+  },
+  {
+    "name": "temp.free.xx.kg",
+    "base_url": "https://mail-backend.free.xx.kg",
+    "origin": "http://temp.free.xx.kg"
+  },
+  {
+    "name": "mail.lemon102030.dpdns.org",
+    "base_url": "https://mailapi.lemon102030.dpdns.org",
+    "origin": "https://mail.lemon102030.dpdns.org"
+  },
+  {
+    "name": "mail.zuimao.me",
+    "base_url": "https://apimail.zuimao.me",
+    "origin": "http://mail.zuimao.me"
+  },
+  {
+    "name": "email.xki.cc",
+    "base_url": "https://emailapi.xki.cc",
+    "origin": "https://email.xki.cc"
+  },
+  {
+    "name": "temp-email-api.lucifei.uk",
+    "base_url": "https://temp-email-api.lucifei.uk",
+    "origin": "http://temp-email-api.lucifei.uk"
+  },
+  {
+    "name": "mail.lzgqin.us.kg",
+    "base_url": "https://emailapi.lzgqin.us.kg",
+    "origin": "http://mail.lzgqin.us.kg"
+  },
+  {
+    "name": "kmust.edu.kg",
+    "base_url": "https://backend.kmust.edu.kg",
+    "origin": "http://kmust.edu.kg"
+  },
+  {
+    "name": "zemail.826907.xyz",
+    "base_url": "https://zemaapi.z520417.workers.dev",
+    "origin": "http://zemail.826907.xyz"
+  },
+  {
+    "name": "email.asdasd.pw",
+    "base_url": "https://email.asdasd.pw",
+    "origin": "https://email.asdasd.pw"
+  },
+  {
+    "name": "lz.lizi.asia",
+    "base_url": "https://apimail.lizi.asia",
+    "origin": "http://lz.lizi.asia"
+  },
+  {
+    "name": "mail.d1novo.icu",
+    "base_url": "https://mail.d1novo.icu",
+    "origin": "https://mail.d1novo.icu"
+  },
+  {
+    "name": "mail2.xiaoce.me:2053",
+    "base_url": "https://mail.xiaoce.me",
+    "origin": "https://mail2.xiaoce.me:2053"
+  },
+  {
+    "name": "mail.ghs.org.cn",
+    "base_url": "https://dev.stardove.workers.dev",
+    "origin": "https://mail.ghs.org.cn"
+  },
+  {
+    "name": "mailminiapp.33333.pro",
+    "base_url": "https://apimail.33333.pro",
+    "origin": "https://mailminiapp.33333.pro"
+  },
+  {
+    "name": "fakemail.ink",
+    "base_url": "https://mailserver.fakemail.ink",
+    "origin": "https://fakemail.ink"
+  },
+  {
+    "name": "temp.025325.xyz",
+    "base_url": "https://temp-api.025325.xyz",
+    "origin": "https://temp.025325.xyz"
+  },
+  {
+    "name": "mail.lewellyn.xyz",
+    "base_url": "https://mail-api.lewellyn.xyz",
+    "origin": "http://mail.lewellyn.xyz"
+  },
+  {
+    "name": "mail.tx88.eu.org",
+    "base_url": "https://email-api.xtang.workers.dev",
+    "origin": "http://mail.tx88.eu.org"
+  },
+  {
+    "name": "public-mail-customers.materouter.xyz",
+    "base_url": "https://mail-customers.materouter.xyz",
+    "origin": "https://public-mail-customers.materouter.xyz"
+  },
+  {
+    "name": "temp-mail.197257.xyz",
+    "base_url": "https://tempmail.197257.xyz",
+    "origin": "http://temp-mail.197257.xyz"
+  },
+  {
+    "name": "temp-mail.keep3r.eu.org",
+    "base_url": "https://temp-mail-api.keep3r.eu.org",
+    "origin": "https://temp-mail.keep3r.eu.org"
+  },
+  {
+    "name": "mail.w4ctech.cn",
+    "base_url": "https://mail-api.w4ctech.cn",
+    "origin": "https://mail.w4ctech.cn"
+  },
+  {
+    "name": "mail.xabc.io",
+    "base_url": "https://mail-api.xabc.io",
+    "origin": "http://mail.xabc.io"
+  },
+  {
+    "name": "temp-mail.yuemanly.win",
+    "base_url": "https://temp-mail-back.yuemanly.win",
+    "origin": "http://temp-mail.yuemanly.win"
+  },
+  {
+    "name": "mail.ialdagorth.com",
+    "base_url": "https://mail-api.ialdagorth.com",
+    "origin": "https://mail.ialdagorth.com"
+  },
+  {
+    "name": "mail.nekohouse.top",
+    "base_url": "https://mail.nekohouse.top",
+    "origin": "https://mail.nekohouse.top"
+  },
+  {
+    "name": "mail.cls.us.kg",
+    "base_url": "https://mail.cls.us.kg",
+    "origin": "https://mail.cls.us.kg"
+  },
+  {
+    "name": "mail.yuan108.cn",
+    "base_url": "https://apimail.yuan108.cn",
+    "origin": "https://mail.yuan108.cn"
+  },
+  {
+    "name": "995579.xyz",
+    "base_url": "http://995579.xyz",
+    "origin": "http://995579.xyz"
+  },
+  {
+    "name": "email-admin.apexpayu.com",
+    "base_url": "https://email-api.apexpayu.com",
+    "origin": "https://email-admin.apexpayu.com"
+  },
+  {
+    "name": "mail.neax.dev",
+    "base_url": "https://mail.dreampasha.workers.dev",
+    "origin": "http://mail.neax.dev"
+  },
+  {
+    "name": "ytouch.me",
+    "base_url": "https://ytouch-api.minxiang0101.workers.dev",
+    "origin": "https://ytouch.me"
+  },
+  {
+    "name": "737.uk",
+    "base_url": "https://api.737.uk",
+    "origin": "http://737.uk"
+  },
+  {
+    "name": "mail.kougami.cn",
+    "base_url": "https://mail.kougami.workers.dev",
+    "origin": "http://mail.kougami.cn"
+  },
+  {
+    "name": "mail.deepextractai.com",
+    "base_url": "https://mail.deepextractai.com",
+    "origin": "https://mail.deepextractai.com"
+  },
+  {
+    "name": "taseek.org",
+    "base_url": "https://api.taseek.org",
+    "origin": "http://taseek.org"
+  },
+  {
+    "name": "mail.qianbaomingpan.xyz",
+    "base_url": "http://mail.qianbaomingpan.xyz",
+    "origin": "http://mail.qianbaomingpan.xyz"
+  },
+  {
+    "name": "cfmail.super-yi.com",
+    "base_url": "https://apimail.super-yi.com",
+    "origin": "http://cfmail.super-yi.com"
+  },
+  {
+    "name": "claudecode.mom",
+    "base_url": "https://claudecode.mom",
+    "origin": "https://claudecode.mom"
+  },
+  {
+    "name": "temp-email-api.koalacloud.top",
+    "base_url": "https://temp-email-api.koalacloud.top",
+    "origin": "https://temp-email-api.koalacloud.top"
+  },
+  {
+    "name": "mail.lxh210yyds.cn",
+    "base_url": "https://apimail.lxh210yyds.cn",
+    "origin": "http://mail.lxh210yyds.cn"
+  },
+  {
+    "name": "mail.ischina.de",
+    "base_url": "https://apimail.ischina.de",
+    "origin": "http://mail.ischina.de"
+  },
+  {
+    "name": "tmail.gms.cool",
+    "base_url": "https://gms.cool",
+    "origin": "http://tmail.gms.cool"
+  },
+  {
+    "name": "temp.lincc.tech",
+    "base_url": "http://temp.lincc.tech",
+    "origin": "http://temp.lincc.tech"
+  },
+  {
+    "name": "phmailone.asia:8443",
+    "base_url": "https://temp-mail.763361850.workers.dev",
+    "origin": "https://phmailone.asia:8443"
+  },
+  {
+    "name": "mail.183444.xyz",
+    "base_url": "https://api.183444.xyz",
+    "origin": "https://mail.183444.xyz"
+  },
+  {
+    "name": "mail.spacefiller.xyz",
+    "base_url": "https://apimail.spacefiller.xyz",
+    "origin": "http://mail.spacefiller.xyz"
+  },
+  {
+    "name": "mail.dwaimail.de",
+    "base_url": "https://mail.dwaimail.de",
+    "origin": "https://mail.dwaimail.de"
+  },
+  {
+    "name": "199510.best",
+    "base_url": "https://mail.199510.best",
+    "origin": "https://199510.best"
+  },
+  {
+    "name": "mail.curxx-ip.top",
+    "base_url": "https://apimail.curxx-ip.top",
+    "origin": "https://mail.curxx-ip.top"
+  },
+  {
+    "name": "mail.tenzentsundue.icu",
+    "base_url": "https://apimail.tenzentsundue.icu",
+    "origin": "http://mail.tenzentsundue.icu"
+  },
+  {
+    "name": "mail.72live.com",
+    "base_url": "https://apimail.72live.com",
+    "origin": "https://mail.72live.com"
+  },
+  {
+    "name": "frontmail.saulbestman.top",
+    "base_url": "https://saulapi.saulbestman.top",
+    "origin": "http://frontmail.saulbestman.top"
+  },
+  {
+    "name": "mail.133532.xyz",
+    "base_url": "https://apimail.133532.xyz",
+    "origin": "http://mail.133532.xyz"
+  },
+  {
+    "name": "mail.xiyiping.cn",
+    "base_url": "https://apimail.xiyiping.cn",
+    "origin": "https://mail.xiyiping.cn"
+  },
+  {
+    "name": "m.xx1.xx.kg",
+    "base_url": "https://e.xx1.xx.kg",
+    "origin": "https://m.xx1.xx.kg"
+  },
+  {
+    "name": "mail.snows.cc",
+    "base_url": "https://mailapi.snows.cc",
+    "origin": "http://mail.snows.cc"
+  },
+  {
+    "name": "mail.521233.xyz",
+    "base_url": "https://apimain.521233.xyz",
+    "origin": "https://mail.521233.xyz"
+  },
+  {
+    "name": "tmail.yexg.top",
+    "base_url": "https://api.tmail.yexg.top",
+    "origin": "https://tmail.yexg.top"
+  },
+  {
+    "name": "mail.qwq.xx.kg",
+    "base_url": "https://apimail.qwq.xx.kg",
+    "origin": "http://mail.qwq.xx.kg"
+  },
+  {
+    "name": "imail.devinx.org",
+    "base_url": "https://apimail.devinx.org",
+    "origin": "https://imail.devinx.org"
+  },
+  {
+    "name": "mail.nnnbv.com",
+    "base_url": "https://apimail.nnnbv.com",
+    "origin": "https://mail.nnnbv.com"
+  },
+  {
+    "name": "mail.rc4.top",
+    "base_url": "https://temp-email-api.rc4.top",
+    "origin": "https://mail.rc4.top"
+  },
+  {
+    "name": "mail.lxs.it.com",
+    "base_url": "https://apimail.lxs.it.com",
+    "origin": "https://mail.lxs.it.com"
+  },
+  {
+    "name": "youxiang.298999.xyz",
+    "base_url": "https://linshi.298999.xyz",
+    "origin": "https://youxiang.298999.xyz"
+  },
+  {
+    "name": "mail.51min.win",
+    "base_url": "https://temp-email-api.51min.win",
+    "origin": "https://mail.51min.win"
+  },
+  {
+    "name": "mail.aifadian.org:2083",
+    "base_url": "https://apimail.aifadian.org",
+    "origin": "https://mail.aifadian.org:2083"
+  },
+  {
+    "name": "mail.xianggemail.tech",
+    "base_url": "https://apimail.xianggemail.tech",
+    "origin": "http://mail.xianggemail.tech"
+  },
+  {
+    "name": "tempmail.test-prioirty.site",
+    "base_url": "https://apimail.test-prioirty.site",
+    "origin": "http://tempmail.test-prioirty.site"
+  },
+  {
+    "name": "sakura-7cs.pages.dev",
+    "base_url": "https://apimail.xswl.xyz",
+    "origin": "http://sakura-7cs.pages.dev"
+  },
+  {
+    "name": "turkeymail.dpdns.org",
+    "base_url": "https://turkeymail.ljx1.workers.dev",
+    "origin": "http://turkeymail.dpdns.org"
+  },
+  {
+    "name": "mail.oeea.cn",
+    "base_url": "https://apimail.oeea.cn",
+    "origin": "http://mail.oeea.cn"
+  },
+  {
+    "name": "email-zz.sfacg.uk",
+    "base_url": "https://email-api.sfacg.uk",
+    "origin": "https://email-zz.sfacg.uk"
+  },
+  {
+    "name": "webemali.520681.xyz",
+    "base_url": "https://emali.520681.xyz",
+    "origin": "http://webemali.520681.xyz"
+  },
+  {
+    "name": "spicygirl.asia",
+    "base_url": "https://api.spicygirl.asia",
+    "origin": "https://spicygirl.asia"
+  },
+  {
+    "name": "tm.3w.pm",
+    "base_url": "https://ctm.box.workers.dev",
+    "origin": "https://tm.3w.pm"
+  },
+  {
+    "name": "mail.seeback.xyz",
+    "base_url": "https://apimail.seeback.xyz",
+    "origin": "http://mail.seeback.xyz"
+  },
+  {
+    "name": "mail.chenyp.ggff.net",
+    "base_url": "https://apimai.chenyp.ggff.net",
+    "origin": "https://mail.chenyp.ggff.net"
+  },
+  {
+    "name": "temp-email-api.huiyuangroup.com:2095",
+    "base_url": "http://temp-email-api.huiyuangroup.com:2095",
+    "origin": "http://temp-email-api.huiyuangroup.com:2095"
+  },
+  {
+    "name": "mail.krai.top",
+    "base_url": "http://mail.krai.top",
+    "origin": "http://mail.krai.top"
+  },
+  {
+    "name": "tempmail.suhuimengx.online",
+    "base_url": "https://apimail.suhuimengx.online",
+    "origin": "http://tempmail.suhuimengx.online"
+  },
+  {
+    "name": "mail.chenyme.com",
+    "base_url": "https://chenyme-mail-api.1595577976.workers.dev",
+    "origin": "https://mail.chenyme.com"
+  },
+  {
+    "name": "temp-mail.20006666.xyz",
+    "base_url": "https://email.20006666.xyz",
+    "origin": "https://temp-mail.20006666.xyz"
+  },
+  {
+    "name": "mail.casefyxzl.org",
+    "base_url": "https://apimail.casefyxzl.org",
+    "origin": "http://mail.casefyxzl.org"
+  },
+  {
+    "name": "mail.loju.xyz",
+    "base_url": "https://apimail.loju.xyz",
+    "origin": "http://mail.loju.xyz"
+  },
+  {
+    "name": "mail.ikunicu.cn",
+    "base_url": "https://mail-api.ikunicu.cn",
+    "origin": "http://mail.ikunicu.cn"
+  },
+  {
+    "name": "mail.tommyfang.top",
+    "base_url": "https://apimail.tommyfang.top",
+    "origin": "http://mail.tommyfang.top"
+  },
+  {
+    "name": "m.zy2.icu",
+    "base_url": "https://api.mail.zy2.icu",
+    "origin": "https://m.zy2.icu"
+  },
+  {
+    "name": "mail.weiaiyun.us.kg",
+    "base_url": "https://apimail.weiaiyun.us.kg",
+    "origin": "http://mail.weiaiyun.us.kg"
+  },
+  {
+    "name": "mail.888222.best",
+    "base_url": "https://apiemail.888222.best",
+    "origin": "http://mail.888222.best"
+  },
+  {
+    "name": "mail.dbapp.xyz",
+    "base_url": "https://apimail.dbapp.xyz",
+    "origin": "http://mail.dbapp.xyz"
+  },
+  {
+    "name": "mail.xyouacg.cn",
+    "base_url": "https://apimail.xyouacg.cn",
+    "origin": "http://mail.xyouacg.cn"
+  },
+  {
+    "name": "mail.wallsee.uk",
+    "base_url": "https://mailapi.wallsee.uk",
+    "origin": "https://mail.wallsee.uk"
+  },
+  {
+    "name": "email.19880408.xyz",
+    "base_url": "https://testemail.19880408.xyz",
+    "origin": "https://email.19880408.xyz"
+  },
+  {
+    "name": "mail.zxn.wiki",
+    "base_url": "https://apimail.zxn.wiki",
+    "origin": "https://mail.zxn.wiki"
+  },
+  {
+    "name": "mail.oiermeow.love",
+    "base_url": "https://apimail.oiermeow.love",
+    "origin": "https://mail.oiermeow.love"
+  },
+  {
+    "name": "mail.3939831.xyz",
+    "base_url": "https://mail-backend.3939831.xyz",
+    "origin": "http://mail.3939831.xyz"
+  },
+  {
+    "name": "mail.799922.xyz",
+    "base_url": "https://apimail.799922.xyz",
+    "origin": "http://mail.799922.xyz"
+  },
+  {
+    "name": "mail.505505.top",
+    "base_url": "https://apimail.505505.top",
+    "origin": "http://mail.505505.top"
+  },
+  {
+    "name": "email.gmid.edu.kg",
+    "base_url": "https://mailapi.gmid.edu.kg",
+    "origin": "http://email.gmid.edu.kg"
+  },
+  {
+    "name": "zerotrace.dpdns.org",
+    "base_url": "https://api.tramail.dpdns.org",
+    "origin": "https://zerotrace.dpdns.org"
+  },
+  {
+    "name": "bernie2.633133.xyz:2053",
+    "base_url": "https://apimail.633133.xyz",
+    "origin": "https://bernie2.633133.xyz:2053"
+  },
+  {
+    "name": "mail-admin.devtool.uk",
+    "base_url": "https://mail.devtool.uk",
+    "origin": "http://mail-admin.devtool.uk"
+  },
+  {
+    "name": "mail.cvmi.xyz",
+    "base_url": "https://mail-api.cvmi.xyz",
+    "origin": "https://mail.cvmi.xyz"
+  },
+  {
+    "name": "mail.nancyz.top",
+    "base_url": "https://apimail.nancyz.top",
+    "origin": "http://mail.nancyz.top"
+  },
+  {
+    "name": "bygmail.org",
+    "base_url": "https://apimail.bygmail.org",
+    "origin": "https://bygmail.org"
+  },
+  {
+    "name": "mail.5458112.xyz",
+    "base_url": "https://tmpmailapi.5458112.xyz",
+    "origin": "http://mail.5458112.xyz"
+  },
+  {
+    "name": "tempmails.410710.xyz",
+    "base_url": "http://tempmails.410710.xyz",
+    "origin": "http://tempmails.410710.xyz"
+  },
+  {
+    "name": "mail.lbyan.us.kg",
+    "base_url": "https://apimail.lbyan.xx.kg",
+    "origin": "https://mail.lbyan.us.kg"
+  },
+  {
+    "name": "email.gejiucai.top",
+    "base_url": "https://email-api.gejiucai.top",
+    "origin": "http://email.gejiucai.top"
+  },
+  {
+    "name": "mail.0x0.cat",
+    "base_url": "https://b.mail.0x0.cat",
+    "origin": "https://mail.0x0.cat"
+  },
+  {
+    "name": "mail.sbrgfv.cn",
+    "base_url": "https://cfmailapi.113812.xyz",
+    "origin": "https://mail.sbrgfv.cn"
+  },
+  {
+    "name": "mail.971314.xyz",
+    "base_url": "https://temp-email-api.971314.xyz",
+    "origin": "http://mail.971314.xyz"
+  },
+  {
+    "name": "email7777.com",
+    "base_url": "https://emailapi.email7777.com",
+    "origin": "http://email7777.com"
+  },
+  {
+    "name": "mail.p0.ee",
+    "base_url": "https://mailapi.p0.ee",
+    "origin": "http://mail.p0.ee"
+  },
+  {
+    "name": "mail.2000007.xyz",
+    "base_url": "https://apimail.2000007.xyz",
+    "origin": "https://mail.2000007.xyz"
+  },
+  {
+    "name": "mail.by950.top",
+    "base_url": "https://mailapi.fqweb.top",
+    "origin": "http://mail.by950.top"
+  },
+  {
+    "name": "webmail.111156.xyz",
+    "base_url": "https://cfmail-api.111156.xyz",
+    "origin": "http://webmail.111156.xyz"
+  },
+  {
+    "name": "temp-email.11228888.xyz",
+    "base_url": "https://temp-email-api.11228888.xyz",
+    "origin": "https://temp-email.11228888.xyz"
+  },
+  {
+    "name": "mail.global.edu.kg:2053",
+    "base_url": "https://mail.global.edu.kg:2053",
+    "origin": "https://mail.global.edu.kg:2053"
+  },
+  {
+    "name": "mail.lanen.online:2083",
+    "base_url": "https://apimail.lanen.online",
+    "origin": "https://mail.lanen.online:2083"
+  },
+  {
+    "name": "mail.dj0725.my",
+    "base_url": "https://apimail.dj0725.my",
+    "origin": "http://mail.dj0725.my"
+  },
+  {
+    "name": "tmail.zyp114514.top",
+    "base_url": "https://temp-email-api.zyp114514.top",
+    "origin": "http://tmail.zyp114514.top"
+  },
+  {
+    "name": "tempmail.psy.edu.kg",
+    "base_url": "https://apimail.psy.edu.kg",
+    "origin": "https://tempmail.psy.edu.kg"
+  },
+  {
+    "name": "mail.125118.xyz",
+    "base_url": "https://xyzmail.stevelee.workers.dev",
+    "origin": "https://mail.125118.xyz"
+  },
+  {
+    "name": "mail.natsuzk.ltd",
+    "base_url": "https://apimail.natsuzk.ltd",
+    "origin": "http://mail.natsuzk.ltd"
+  },
+  {
+    "name": "email.250996007.xyz",
+    "base_url": "https://temp-email-api.250996007.xyz",
+    "origin": "https://email.250996007.xyz"
+  },
+  {
+    "name": "mail.wanqing.fun",
+    "base_url": "https://apimail.wanqing.fun",
+    "origin": "https://mail.wanqing.fun"
+  },
+  {
+    "name": "email.iobsessy.com",
+    "base_url": "https://api.mail.iobsessy.com",
+    "origin": "https://email.iobsessy.com"
+  },
+  {
+    "name": "m.k2mail.eu.org",
+    "base_url": "https://back.k2mail.eu.org",
+    "origin": "https://m.k2mail.eu.org"
+  },
+  {
+    "name": "mail.bupang.top",
+    "base_url": "https://apimail.bupang.top",
+    "origin": "https://mail.bupang.top"
+  },
+  {
+    "name": "email.youhui666.dpdns.org",
+    "base_url": "https://temp-email-api.youhui666.dpdns.org",
+    "origin": "http://email.youhui666.dpdns.org"
+  },
+  {
+    "name": "tmp.980334400.xyz",
+    "base_url": "https://tmp-api.980334400.xyz",
+    "origin": "https://tmp.980334400.xyz"
+  },
+  {
+    "name": "mail.spica.asia",
+    "base_url": "https://apimail.spica.asia",
+    "origin": "https://mail.spica.asia"
+  },
+  {
+    "name": "mail.cduck.xyz",
+    "base_url": "https://apimail.cduck.xyz",
+    "origin": "http://mail.cduck.xyz"
+  },
+  {
+    "name": "email.aixiao.xyz",
+    "base_url": "https://apimail.aixiao.xyz",
+    "origin": "http://email.aixiao.xyz"
+  },
+  {
+    "name": "mail.031224.xyz",
+    "base_url": "https://apimail.031224.xyz",
+    "origin": "https://mail.031224.xyz"
+  },
+  {
+    "name": "mail.etheral12138.dpdns.org",
+    "base_url": "https://tempmail.liuzequn12138.workers.dev",
+    "origin": "http://mail.etheral12138.dpdns.org"
+  },
+  {
+    "name": "temp-mail.minidog.cc",
+    "base_url": "https://hostmail.minidog.cc",
+    "origin": "http://temp-mail.minidog.cc"
+  },
+  {
+    "name": "mail.106996.xyz",
+    "base_url": "https://apimail.106996.xyz",
+    "origin": "http://mail.106996.xyz"
+  },
+  {
+    "name": "mail.cuyu.edu.kg",
+    "base_url": "https://mailapi.cuyu.edu.kg",
+    "origin": "http://mail.cuyu.edu.kg"
+  },
+  {
+    "name": "mail.bise.edu.kg:2083",
+    "base_url": "https://apimail.bise.edu.kg",
+    "origin": "https://mail.bise.edu.kg:2083"
+  },
+  {
+    "name": "mail.acips.cc:2053",
+    "base_url": "https://apimail.acips.cc",
+    "origin": "https://mail.acips.cc:2053"
+  },
+  {
+    "name": "mail.dawngo.asia",
+    "base_url": "https://apimail.dawngo.asia",
+    "origin": "http://mail.dawngo.asia"
+  },
+  {
+    "name": "ems.haomo.de",
+    "base_url": "https://em.haomo.de",
+    "origin": "http://ems.haomo.de"
+  },
+  {
+    "name": "mail.alfredhhy.top",
+    "base_url": "https://apimail.alfredhhy.top",
+    "origin": "http://mail.alfredhhy.top"
+  },
+  {
+    "name": "mail.xiaochencat.xyz",
+    "base_url": "https://apimail.xiaochencat.xyz",
+    "origin": "http://mail.xiaochencat.xyz"
+  },
+  {
+    "name": "mail.ocat.top",
+    "base_url": "https://mail.ocat.top",
+    "origin": "https://mail.ocat.top"
+  },
+  {
+    "name": "mail.neuq.edu.kg",
+    "base_url": "https://apimail.neuq.edu.kg",
+    "origin": "https://mail.neuq.edu.kg"
+  },
+  {
+    "name": "mail.xu5.me",
+    "base_url": "https://apim.006662.xyz",
+    "origin": "https://mail.xu5.me"
+  },
+  {
+    "name": "emmm.yeelovo.com",
+    "base_url": "https://emmmapi.yeelovo.com",
+    "origin": "https://emmm.yeelovo.com"
+  },
+  {
+    "name": "ycmail.sbs",
+    "base_url": "https://api.ycmail.sbs",
+    "origin": "https://ycmail.sbs"
+  },
+  {
+    "name": "kaza.dpdns.org",
+    "base_url": "https://apimail.kaza.dpdns.org",
+    "origin": "http://kaza.dpdns.org"
+  },
+  {
+    "name": "mail.utopiamc.top",
+    "base_url": "https://apimail.utopiamc.top",
+    "origin": "http://mail.utopiamc.top"
+  },
+  {
+    "name": "dalong.edu.pl",
+    "base_url": "http://dalong.edu.pl",
+    "origin": "http://dalong.edu.pl"
+  },
+  {
+    "name": "lmail.sbs",
+    "base_url": "https://api.lmail.sbs",
+    "origin": "http://lmail.sbs"
+  },
+  {
+    "name": "temp-mail.hackx.dpdns.org",
+    "base_url": "http://temp-mail.hackx.dpdns.org",
+    "origin": "http://temp-mail.hackx.dpdns.org"
+  },
+  {
+    "name": "mail.lzhlovezx.xyz",
+    "base_url": "https://apimail.lzhlovezx.xyz",
+    "origin": "https://mail.lzhlovezx.xyz"
+  },
+  {
+    "name": "mail.wangsun.online",
+    "base_url": "https://apimail.wangsun.online",
+    "origin": "https://mail.wangsun.online"
+  },
+  {
+    "name": "www.outlook.tw",
+    "base_url": "https://mailapi.outlook.tw",
+    "origin": "https://www.outlook.tw"
+  },
+  {
+    "name": "mail.vtech.edu.pl",
+    "base_url": "https://mailapi.vtech.edu.pl",
+    "origin": "http://mail.vtech.edu.pl"
+  },
+  {
+    "name": "mail.hotmail.qzz.io",
+    "base_url": "https://apimail.hotmail.qzz.io",
+    "origin": "http://mail.hotmail.qzz.io"
+  },
+  {
+    "name": "heima.caishihan.shop",
+    "base_url": "https://apiheima.caishihan.shop",
+    "origin": "http://heima.caishihan.shop"
+  },
+  {
+    "name": "yzcjwds.xyz",
+    "base_url": "https://apimail.yzcjwds.xyz",
+    "origin": "http://yzcjwds.xyz"
+  },
+  {
+    "name": "mail.linux-do.academy",
+    "base_url": "https://ldmail.fimall.workers.dev",
+    "origin": "https://mail.linux-do.academy"
+  },
+  {
+    "name": "mail.mirai.edu.kg",
+    "base_url": "https://apimail.mirai.edu.kg",
+    "origin": "http://mail.mirai.edu.kg"
+  },
+  {
+    "name": "mail.v.edu.kg",
+    "base_url": "https://api-email.v.edu.kg",
+    "origin": "https://mail.v.edu.kg"
+  },
+  {
+    "name": "mail.feisakura.fun",
+    "base_url": "https://apimail.feisakura.fun",
+    "origin": "https://mail.feisakura.fun"
+  },
+  {
+    "name": "mail.apiex.de",
+    "base_url": "https://apimail.apiex.de",
+    "origin": "http://mail.apiex.de"
+  },
+  {
+    "name": "mail.gotto.chat",
+    "base_url": "https://apimail.gotto.chat",
+    "origin": "https://mail.gotto.chat"
+  },
+  {
+    "name": "mail.gsadfh.top",
+    "base_url": "https://apimail.gsadfh.top",
+    "origin": "https://mail.gsadfh.top"
+  },
+  {
+    "name": "mail.83338848.xyz",
+    "base_url": "https://apimail.83338848.xyz",
+    "origin": "https://mail.83338848.xyz"
+  },
+  {
+    "name": "mail.edugo.eu.org",
+    "base_url": "https://mail0916.weiyun.workers.dev",
+    "origin": "https://mail.edugo.eu.org"
+  },
+  {
+    "name": "email.cdtools.click",
+    "base_url": "https://temp-email-api.cdtools.click",
+    "origin": "http://email.cdtools.click"
+  },
+  {
+    "name": "email.peng.mom",
+    "base_url": "https://apimail.peng.mom",
+    "origin": "http://email.peng.mom"
+  },
+  {
+    "name": "mail.lengyandong.eu.org",
+    "base_url": "https://temp-mail.workers.lengyandong.eu.org",
+    "origin": "https://mail.lengyandong.eu.org"
+  },
+  {
+    "name": "temp-email.usxx.xyz",
+    "base_url": "https://temp-email-api.usxx.xyz",
+    "origin": "http://temp-email.usxx.xyz"
+  },
+  {
+    "name": "mail.mygcp.tk",
+    "base_url": "https://tempmail.mygcp.tk",
+    "origin": "https://mail.mygcp.tk"
+  },
+  {
+    "name": "mail.kinopio.vip",
+    "base_url": "https://apimail.kinopio.vip",
+    "origin": "https://mail.kinopio.vip"
+  },
+  {
+    "name": "mail.hexsean.link",
+    "base_url": "https://apimail.hexsean.link",
+    "origin": "http://mail.hexsean.link"
+  },
+  {
+    "name": "mail.ivanhao.xyz",
+    "base_url": "https://work.ivanhao.xyz",
+    "origin": "http://mail.ivanhao.xyz"
+  },
+  {
+    "name": "tempemail.skyup.top",
+    "base_url": "https://temp-email-backend.lyzz0612.workers.dev",
+    "origin": "https://tempemail.skyup.top"
+  },
+  {
+    "name": "tmail.uastro.eu.org",
+    "base_url": "https://temp-mail.uastro.eu.org",
+    "origin": "https://tmail.uastro.eu.org"
+  },
+  {
+    "name": "email.ihalo.top",
+    "base_url": "https://temp-email-api.ihalo.top",
+    "origin": "http://email.ihalo.top"
+  },
+  {
+    "name": "mail.chatgpt-web.us",
+    "base_url": "https://apimail.chatgpt-web.us",
+    "origin": "https://mail.chatgpt-web.us"
+  },
+  {
+    "name": "mail.melikeme.cn",
+    "base_url": "https://mailapi.melikeme.cn",
+    "origin": "https://mail.melikeme.cn"
+  },
+  {
+    "name": "mail.we-together.club",
+    "base_url": "https://apimail.we-together.club",
+    "origin": "https://mail.we-together.club"
+  },
+  {
+    "name": "mail.drhorry.com",
+    "base_url": "https://tempmail-api.drhorry.com",
+    "origin": "http://mail.drhorry.com"
+  },
+  {
+    "name": "email.291055.xyz",
+    "base_url": "https://email.yxzhou629.workers.dev",
+    "origin": "http://email.291055.xyz"
+  },
+  {
+    "name": "email.050810.xyz",
+    "base_url": "https://email.050810.xyz",
+    "origin": "https://email.050810.xyz"
+  },
+  {
+    "name": "email.waifuoid.com",
+    "base_url": "https://email-api.waifuoid.com",
+    "origin": "https://email.waifuoid.com"
+  },
+  {
+    "name": "mail.myli.fun",
+    "base_url": "https://apimail.myli.fun",
+    "origin": "http://mail.myli.fun"
+  },
+  {
+    "name": "mail.haruna.tk",
+    "base_url": "https://temp-email-api.haruna.tk",
+    "origin": "http://mail.haruna.tk"
+  },
+  {
+    "name": "email.335665.xyz",
+    "base_url": "https://temp-email-api.335665.xyz",
+    "origin": "https://email.335665.xyz"
+  },
+  {
+    "name": "mail.dreamful.top",
+    "base_url": "https://apimail.dreamful.top",
+    "origin": "http://mail.dreamful.top"
+  },
+  {
+    "name": "mail.pw0n.xyz",
+    "base_url": "https://apimail.pw0n.xyz",
+    "origin": "http://mail.pw0n.xyz"
+  },
+  {
+    "name": "webmail.qwqa.link",
+    "base_url": "https://cfemail.qwqa.link",
+    "origin": "http://webmail.qwqa.link"
+  },
+  {
+    "name": "tempemail.aikrai.xyz",
+    "base_url": "https://tempemailapi.aikrai.xyz",
+    "origin": "http://tempemail.aikrai.xyz"
+  },
+  {
+    "name": "mail.nierss.eu.org",
+    "base_url": "https://mailworkers.17shua89356.workers.dev",
+    "origin": "https://mail.nierss.eu.org"
+  },
+  {
+    "name": "tmpmailpage.hhdaisy.com",
+    "base_url": "https://hhdaisy.com",
+    "origin": "https://tmpmailpage.hhdaisy.com"
+  },
+  {
+    "name": "email.veritablevein.top",
+    "base_url": "https://temp-email-api.veritablevein.top",
+    "origin": "http://email.veritablevein.top"
+  },
+  {
+    "name": "mail.008686.xyz",
+    "base_url": "https://mailapi.008686.xyz",
+    "origin": "http://mail.008686.xyz"
+  },
+  {
+    "name": "mail.gavinchen.top",
+    "base_url": "https://mail-back.gavinchen.top",
+    "origin": "http://mail.gavinchen.top"
+  },
+  {
+    "name": "www.presafe.email",
+    "base_url": "https://www.presafe.email",
+    "origin": "https://www.presafe.email"
+  },
+  {
+    "name": "cfmail.981198.xyz",
+    "base_url": "https://ccffmail-api.981198.xyz",
+    "origin": "http://cfmail.981198.xyz"
+  }
+]
