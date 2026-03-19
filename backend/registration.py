@@ -245,10 +245,15 @@ def run_register(
 
         # 4. 访问授权页面
         log("[3/14] 访问授权页面...")
-        _safe_request("授权页面", lambda: s.get(oauth.auth_url, timeout=30), log)
+        auth_resp = _safe_request("授权页面", lambda: s.get(oauth.auth_url, timeout=30), log)
+        log(f"授权页面状态: {auth_resp.status_code}")
+
         did = s.cookies.get("oai-did")
         if not did:
-            raise RuntimeError("未获取到 Device ID (oai-did cookie)")
+            # 打印所有 cookie 帮助调试
+            all_cookies = "; ".join([f"{k}={v[:20]}..." for k, v in s.cookies.items()])
+            log(f"收到的 cookies: {all_cookies if all_cookies else '(空)'}")
+            raise RuntimeError("未获取到 Device ID (oai-did cookie)，可能是代理被 Cloudflare 拦截")
         log(f"Device ID: {did}")
 
         # 5. Sentinel Token

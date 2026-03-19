@@ -144,21 +144,10 @@ class TaskManager:
         if not password:
             self._push_log(f"[#{index}] 使用随机密码")
 
-        # 选择代理：设置里的 > 代理池 > 直连
-        proxy_url = None
-        if default_proxy:
-            proxy_url = default_proxy
-        else:
-            enabled_proxies = [p for p in proxies if p.get("enabled")]
-            if enabled_proxies:
-                proxy_url = random.choice(enabled_proxies)["url"]
+        # 可用代理列表
+        enabled_proxies = [p for p in proxies if p.get("enabled")]
 
-        if proxy_url:
-            self._push_log(f"[#{index}] 使用代理: {proxy_url}")
-        else:
-            self._push_log(f"[#{index}] 使用直连网络")
-
-        # 选择邮箱提供商
+        # 可用邮箱提供商
         enabled_providers = [p for p in providers if p.get("enabled")]
         if not enabled_providers:
             self._push_log(f"[#{index}] 没有可用的邮箱提供商!")
@@ -168,101 +157,149 @@ class TaskManager:
             self._check_done()
             return
 
-        random.shuffle(enabled_providers)
-        provider = enabled_providers[0]
+        # 可重试的错误关键词
+        _retryable = [
+            "unsupported_email",
+            "oai-did cookie",
+            "Device ID",
+            "curl: (35)",
+            "curl: (56)",
+            "curl: (28)",
+            "curl: (52)",
+            "curl: (55)",
+            "Connection was reset",
+            "SSL_connect",
+            "Cloudflare 拦截",
+            "403",
+        ]
 
-        # 创建数据库记录
+        max_attempts = 3
         account_id = None
-        if self._db_create_account and self._loop:
-            future = asyncio.run_coroutine_threadsafe(
-                self._db_create_account(
-                    email="pending",
+        last_err = ""
+
+        for attempt in range(max_attempts):
+            if self._stop_event.is_set():
+                return
+
+            if attempt > 0:
+                self._push_log(f"[#{index}] 第 {attempt + 1}/{max_attempts} 次尝试...")
+
+            # 选择代理：设置里的 > 代理池随机 > 直连
+            proxy_url = None
+            if default_proxy:
+                proxy_url = default_proxy
+            elif enabled_proxies:
+                proxy_url = random.choice(enabled_proxies)["url"]
+
+            if proxy_url:
+                self._push_log(f"[#{index}] 使用代理: {proxy_url}")
+            else:
+                self._push_log(f"[#{index}] 使用直连网络")
+
+            # 随机选择邮箱提供商
+            random.shuffle(enabled_providers)
+            provider = enabled_providers[0]
+
+            # 首次尝试时创建数据库记录
+            if attempt == 0:
+                if self._db_create_account and self._loop:
+                    future = asyncio.run_coroutine_threadsafe(
+                        self._db_create_account(
+                            email="pending",
+                            password=actual_password,
+                            status="registering",
+                            temp_email_provider=provider["name"],
+                            proxy_used=proxy_url or "",
+                        ),
+                        self._loop,
+                    )
+                    try:
+                        account_id = future.result(timeout=5)
+                    except Exception as e:
+                        self._push_log(f"[#{index}] DB 写入失败: {str(e)[:100]}")
+
+            mail_client = TempMailClient(provider, enabled_providers)
+            mail_client.set_log_fn(lambda msg: self._push_log(f"[#{index}] {msg}"))
+            try:
+                result = run_register(
                     password=actual_password,
-                    status="registering",
-                    temp_email_provider=provider["name"],
-                    proxy_used=proxy_url or "",
+                    proxy=proxy_url,
+                    mail_client=mail_client,
+                    log_fn=lambda msg: self._push_log(f"[#{index}] {msg}"),
+                    email_poll_timeout=email_poll_timeout,
+                )
+
+                # 成功 — 更新数据库
+                if account_id and self._db_update_account and self._loop:
+                    future = asyncio.run_coroutine_threadsafe(
+                        self._db_update_account(
+                            account_id,
+                            email=result.get("email", ""),
+                            access_token=result.get("access_token"),
+                            refresh_token=result.get("refresh_token"),
+                            id_token=result.get("id_token"),
+                            account_id=result.get("account_id"),
+                            token_expired_at=result.get("token_expired_at"),
+                            temp_email_provider=result.get("temp_email_provider"),
+                            proxy_used=result.get("proxy_used"),
+                            status="success",
+                        ),
+                        self._loop,
+                    )
+                    try:
+                        future.result(timeout=5)
+                    except Exception as e:
+                        self._push_log(f"[#{index}] DB 更新失败: {str(e)[:100]}")
+
+                with self._lock:
+                    self._completed += 1
+                    self._success += 1
+                self._push_log(f"[#{index}] 注册成功: {result.get('email')}")
+                return  # 成功，退出重试循环
+
+            except Exception as e:
+                last_err = str(e)[:300]
+                self._push_log(f"[#{index}] 注册失败: {last_err}")
+
+                # 判断是否可重试
+                can_retry = attempt + 1 < max_attempts and any(kw in last_err for kw in _retryable)
+                if can_retry:
+                    self._push_log(f"[#{index}] 将换代理/提供商重试...")
+                    wait = 3 * (attempt + 1)
+                    self._stop_event.wait(wait)
+                    continue
+                else:
+                    break  # 不可重试，退出循环
+
+            finally:
+                mail_client.close()
+
+        # 所有尝试都失败了
+        if account_id and self._db_update_account and self._loop:
+            future = asyncio.run_coroutine_threadsafe(
+                self._db_update_account(
+                    account_id,
+                    email="pending",
+                    status="failed",
+                    error_message=last_err,
                 ),
                 self._loop,
             )
             try:
-                account_id = future.result(timeout=5)
-            except Exception as e:
-                self._push_log(f"[#{index}] DB 写入失败: {str(e)[:100]}")
+                future.result(timeout=5)
+            except Exception:
+                pass
 
-        mail_client = TempMailClient(provider, enabled_providers)
-        mail_client.set_log_fn(lambda msg: self._push_log(f"[#{index}] {msg}"))
-        try:
-            result = run_register(
-                password=actual_password,
-                proxy=proxy_url,
-                mail_client=mail_client,
-                log_fn=lambda msg: self._push_log(f"[#{index}] {msg}"),
-                email_poll_timeout=email_poll_timeout,
-            )
+        with self._lock:
+            self._completed += 1
+            self._failed += 1
+        self._check_done()
 
-            # 更新数据库
-            if account_id and self._db_update_account and self._loop:
-                future = asyncio.run_coroutine_threadsafe(
-                    self._db_update_account(
-                        account_id,
-                        email=result.get("email", ""),
-                        access_token=result.get("access_token"),
-                        refresh_token=result.get("refresh_token"),
-                        id_token=result.get("id_token"),
-                        account_id=result.get("account_id"),
-                        token_expired_at=result.get("token_expired_at"),
-                        temp_email_provider=result.get("temp_email_provider"),
-                        proxy_used=result.get("proxy_used"),
-                        status="success",
-                    ),
-                    self._loop,
-                )
-                try:
-                    future.result(timeout=5)
-                except Exception as e:
-                    self._push_log(f"[#{index}] DB 更新失败: {str(e)[:100]}")
-
-            with self._lock:
-                self._completed += 1
-                self._success += 1
-            self._push_log(f"[#{index}] 注册成功: {result.get('email')}")
-
-        except Exception as e:
-            err_msg = str(e)[:300]
-            self._push_log(f"[#{index}] 注册失败: {err_msg}")
-
-            if account_id and self._db_update_account and self._loop:
-                # 尝试获取已创建的邮箱地址
-                actual_email = mail_client.email_address or "pending"
-                actual_provider = mail_client.provider.get("name", "")
-                future = asyncio.run_coroutine_threadsafe(
-                    self._db_update_account(
-                        account_id,
-                        email=actual_email,
-                        status="failed",
-                        error_message=err_msg,
-                        temp_email_provider=actual_provider,
-                    ),
-                    self._loop,
-                )
-                try:
-                    future.result(timeout=5)
-                except Exception as e2:
-                    self._push_log(f"[#{index}] DB 更新失败: {str(e2)[:100]}")
-
-            with self._lock:
-                self._completed += 1
-                self._failed += 1
-
-        finally:
-            mail_client.close()
-            self._check_done()
-
-            # 延迟
-            if not self._stop_event.is_set() and delay_min > 0:
-                wait = random.randint(delay_min, delay_max)
-                self._push_log(f"[#{index}] 等待 {wait}s...")
-                self._stop_event.wait(wait)
+        # 延迟
+        if not self._stop_event.is_set() and delay_min > 0:
+            wait = random.randint(delay_min, delay_max)
+            self._push_log(f"[#{index}] 等待 {wait}s...")
+            self._stop_event.wait(wait)
 
     def _check_done(self):
         with self._lock:
