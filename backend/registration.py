@@ -328,8 +328,9 @@ def run_register(
         log(f"注册表单状态: {signup_resp.status_code}")
         if signup_resp.status_code == 403:
             raise RuntimeError("被 Cloudflare 拦截 (403)，请更换代理 IP")
+        # 原版不检查状态码直接继续，这里只对 403 报错，其他状态码记录但不中断
         if signup_resp.status_code not in (200, 201, 302):
-            raise RuntimeError(f"注册表单提交失败 ({signup_resp.status_code}): {signup_resp.text[:300]}")
+            log(f"注册表单返回非200: {signup_resp.status_code} {signup_resp.text[:200]}（继续尝试）")
 
         # 7. 提交密码
         log("[6/14] 提交密码...")
@@ -352,7 +353,7 @@ def run_register(
         if pwd_resp.status_code == 403:
             raise RuntimeError("被 Cloudflare 拦截 (403)，请更换代理 IP")
         if pwd_resp.status_code not in (200, 201, 302):
-            raise RuntimeError(f"密码提交失败 ({pwd_resp.status_code}): {pwd_resp.text[:300]}")
+            log(f"密码提交返回非200: {pwd_resp.status_code} {pwd_resp.text[:200]}（继续尝试）")
 
         # 8. 发送验证码
         log("[7/14] 请求发送验证码...")
@@ -370,7 +371,7 @@ def run_register(
         otp_resp = _safe_request("发送验证码", _send_otp, log)
         log(f"验证码发送状态: {otp_resp.status_code}")
         if otp_resp.status_code not in (200, 201, 302):
-            raise RuntimeError(f"验证码发送失败 ({otp_resp.status_code}): {otp_resp.text[:200]}")
+            log(f"验证码发送返回非200: {otp_resp.status_code} {otp_resp.text[:200]}（继续尝试）")
 
         # 9. 获取验证码
         log(f"[8/14] 等待验证码 (超时: {email_poll_timeout}s)...")

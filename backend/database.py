@@ -72,7 +72,7 @@ async def init_db():
             default_proxy TEXT NOT NULL DEFAULT 'http://127.0.0.1:7897',
             registration_delay_min INTEGER NOT NULL DEFAULT 5,
             registration_delay_max INTEGER NOT NULL DEFAULT 30,
-            email_poll_timeout INTEGER NOT NULL DEFAULT 35,
+            email_poll_timeout INTEGER NOT NULL DEFAULT 120,
             auto_switch_provider INTEGER NOT NULL DEFAULT 1
         );
 
