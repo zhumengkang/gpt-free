@@ -186,6 +186,33 @@ def submit_callback_url(*, callback_url: str, expected_state: str, code_verifier
     }
 
 
+_RETRYABLE_CURL_ERRORS = [
+    "curl: (6)",   # Could not resolve host
+    "curl: (7)",   # Failed to connect
+    "curl: (16)",  # HTTP/2 error
+    "curl: (18)",  # Transfer closed
+    "curl: (28)",  # Operation timed out
+    "curl: (35)",  # SSL connect error / Connection was reset
+    "curl: (47)",  # Too many redirects
+    "curl: (52)",  # Empty reply from server
+    "curl: (55)",  # Send failure
+    "curl: (56)",  # Recv failure
+    "Connection was reset",
+    "SSL_connect",
+    "Connection refused",
+    "Connection aborted",
+    "RemoteDisconnected",
+    "ConnectionResetError",
+    "TimeoutError",
+    "timed out",
+]
+
+
+def _is_retryable_error(err_str: str) -> bool:
+    """判断错误是否可重试"""
+    return any(x in err_str for x in _RETRYABLE_CURL_ERRORS)
+
+
 def _safe_request(label: str, fn, log, retries: int = 3):
     """带重试的请求包装，网络瞬时错误自动重试"""
     last_err = None
@@ -195,11 +222,10 @@ def _safe_request(label: str, fn, log, retries: int = 3):
         except Exception as e:
             last_err = e
             err_str = str(e)
-            # 可重试的 curl 错误
-            if any(x in err_str for x in ["curl: (16)", "curl: (18)", "curl: (28)", "curl: (35)", "curl: (52)", "curl: (55)", "curl: (56)"]):
+            if _is_retryable_error(err_str):
                 if attempt + 1 < retries:
                     wait = 3 * (attempt + 1)
-                    log(f"[{label}] 网络错误，{wait}s 后重试 ({attempt+2}/{retries})...")
+                    log(f"[{label}] 网络错误: {err_str[:80]}，{wait}s 后重试 ({attempt+2}/{retries})...")
                     time.sleep(wait)
                     continue
             raise

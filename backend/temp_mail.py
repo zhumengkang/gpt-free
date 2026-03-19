@@ -17,6 +17,8 @@ class TempMailClient:
         self.jwt: str | None = None
         self.email_address: str | None = None
         self._log_fn = None
+        # 记录本次会话中失败的提供商
+        self._failed_providers: set[str] = set()
 
     def set_log_fn(self, fn):
         self._log_fn = fn
@@ -33,15 +35,28 @@ class TempMailClient:
         }
 
     def switch_provider(self) -> bool:
-        """切换到下一个可用提供商"""
+        """切换到下一个可用提供商，跳过已知失败的"""
         if len(self.all_providers) <= 1:
             return False
-        idx = next(
-            (i for i, p in enumerate(self.all_providers) if p["name"] == self.provider["name"]),
-            0,
-        )
-        next_idx = (idx + 1) % len(self.all_providers)
-        self.provider = self.all_providers[next_idx]
+
+        current_name = self.provider["name"]
+        self._failed_providers.add(current_name)
+
+        # 优先选没失败过的提供商
+        available = [
+            p for p in self.all_providers
+            if p["name"] not in self._failed_providers
+        ]
+        if available:
+            self.provider = random.choice(available)
+        else:
+            # 所有都失败过了，随机选一个不同的
+            others = [p for p in self.all_providers if p["name"] != current_name]
+            if not others:
+                return False
+            self._failed_providers.clear()
+            self.provider = random.choice(others)
+
         self.jwt = None
         self.email_address = None
         self._log(f"切换到提供商: {self.provider['name']}")

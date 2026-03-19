@@ -1,4 +1,4 @@
-"""线程池 + 日志队列管理"""
+"""线程池 + 日志队列管理 - 增强版：智能重试 + 代理健康追踪"""
 import asyncio
 import json
 import random
@@ -11,6 +11,7 @@ from datetime import datetime
 
 from backend.temp_mail import TempMailClient
 from backend.registration import run_register
+from backend.proxy_pool import ProxyPool
 
 
 def _generate_password(length: int = 16) -> str:
@@ -47,6 +48,11 @@ class TaskManager:
         # 由外部注入
         self._db_create_account = None
         self._db_update_account = None
+        # 代理健康追踪
+        self._proxy_pool = ProxyPool()
+        # 失败的邮箱提供商追踪 {provider_name: fail_count}
+        self._provider_fails: dict[str, int] = {}
+        self._provider_fails_lock = threading.Lock()
 
     def set_log_queue(self, queue: asyncio.Queue, loop: asyncio.AbstractEventLoop):
         self._log_queue = queue
@@ -72,6 +78,19 @@ class TaskManager:
             "failed": self._failed,
         }
 
+    def _mark_provider_fail(self, provider_name: str):
+        """记录邮箱提供商失败"""
+        with self._provider_fails_lock:
+            self._provider_fails[provider_name] = self._provider_fails.get(provider_name, 0) + 1
+
+    def _get_sorted_providers(self, providers: list[dict]) -> list[dict]:
+        """按失败次数排序提供商，失败少的优先"""
+        with self._provider_fails_lock:
+            return sorted(
+                providers,
+                key=lambda p: self._provider_fails.get(p["name"], 0),
+            )
+
     def start(
         self,
         count: int,
@@ -93,6 +112,9 @@ class TaskManager:
         self._completed = 0
         self._success = 0
         self._failed = 0
+
+        # 初始化代理池
+        self._proxy_pool.update(proxies)
 
         self._executor = ThreadPoolExecutor(max_workers=thread_count)
 
@@ -157,25 +179,63 @@ class TaskManager:
             self._check_done()
             return
 
-        # 可重试的错误关键词
+        # 可重试的错误关键词（扩展列表）
         _retryable = [
             "unsupported_email",
             "oai-did cookie",
             "Device ID",
-            "curl: (35)",
-            "curl: (56)",
+            "curl: (6)",
+            "curl: (7)",
+            "curl: (16)",
+            "curl: (18)",
             "curl: (28)",
+            "curl: (35)",
+            "curl: (47)",
             "curl: (52)",
             "curl: (55)",
+            "curl: (56)",
             "Connection was reset",
+            "Connection refused",
+            "Connection aborted",
+            "RemoteDisconnected",
+            "ConnectionResetError",
             "SSL_connect",
             "Cloudflare 拦截",
             "403",
+            "timed out",
+            "TimeoutError",
+            "Sentinel 请求失败",
         ]
 
-        max_attempts = 3
+        # 需要换代理的错误（代理相关问题）
+        _proxy_errors = [
+            "oai-did cookie",
+            "Device ID",
+            "curl: (6)",
+            "curl: (7)",
+            "curl: (28)",
+            "curl: (35)",
+            "curl: (56)",
+            "Connection was reset",
+            "Connection refused",
+            "SSL_connect",
+            "Cloudflare 拦截",
+            "403",
+            "timed out",
+            "Sentinel 请求失败",
+        ]
+
+        # 需要换邮箱提供商的错误
+        _email_errors = [
+            "unsupported_email",
+            "not supported",
+        ]
+
+        max_attempts = 5  # 增加到5次
         account_id = None
         last_err = ""
+        used_proxies: set[str] = set()  # 记录本次任务已用过的代理
+        used_providers: set[str] = set()  # 记录本次任务已用过的提供商
 
         for attempt in range(max_attempts):
             if self._stop_event.is_set():
@@ -184,21 +244,30 @@ class TaskManager:
             if attempt > 0:
                 self._push_log(f"[#{index}] 第 {attempt + 1}/{max_attempts} 次尝试...")
 
-            # 选择代理：设置里的 > 代理池随机 > 直连
+            # 智能选择代理
             proxy_url = None
             if default_proxy:
                 proxy_url = default_proxy
             elif enabled_proxies:
-                proxy_url = random.choice(enabled_proxies)["url"]
+                # 使用代理池智能选择，排除本次已失败的代理
+                proxy_url = self._proxy_pool.get_random_url(exclude=used_proxies)
+                if not proxy_url:
+                    # 所有代理都试过了，清空重来
+                    used_proxies.clear()
+                    proxy_url = self._proxy_pool.get_random_url()
 
             if proxy_url:
                 self._push_log(f"[#{index}] 使用代理: {proxy_url}")
             else:
                 self._push_log(f"[#{index}] 使用直连网络")
 
-            # 随机选择邮箱提供商
-            random.shuffle(enabled_providers)
-            provider = enabled_providers[0]
+            # 智能选择邮箱提供商：优先选失败次数少的，避免重复使用已失败的
+            sorted_providers = self._get_sorted_providers(enabled_providers)
+            # 优先选没用过的
+            unused = [p for p in sorted_providers if p["name"] not in used_providers]
+            provider = unused[0] if unused else sorted_providers[0]
+
+            self._push_log(f"[#{index}] 使用邮箱提供商: {provider['name']}")
 
             # 首次尝试时创建数据库记录
             if attempt == 0:
@@ -228,6 +297,10 @@ class TaskManager:
                     log_fn=lambda msg: self._push_log(f"[#{index}] {msg}"),
                     email_poll_timeout=email_poll_timeout,
                 )
+
+                # 成功 — 标记代理健康
+                if proxy_url:
+                    self._proxy_pool.mark_success(proxy_url)
 
                 # 成功 — 更新数据库
                 if account_id and self._db_update_account and self._loop:
@@ -261,15 +334,43 @@ class TaskManager:
                 last_err = str(e)[:300]
                 self._push_log(f"[#{index}] 注册失败: {last_err}")
 
+                # 根据错误类型做针对性处理
+                is_proxy_err = any(kw in last_err for kw in _proxy_errors)
+                is_email_err = any(kw in last_err for kw in _email_errors)
+
+                if is_proxy_err and proxy_url:
+                    self._proxy_pool.mark_fail(proxy_url)
+                    used_proxies.add(proxy_url)
+                    health = self._proxy_pool.get_health_summary()
+                    self._push_log(
+                        f"[#{index}] 代理问题，已标记失败 "
+                        f"(可用: {health['total_enabled'] - health['temporarily_disabled']}/{health['total_enabled']})"
+                    )
+
+                if is_email_err:
+                    self._mark_provider_fail(provider["name"])
+                    used_providers.add(provider["name"])
+                    self._push_log(f"[#{index}] 邮箱域名被拒，已标记提供商 {provider['name']} 失败")
+
                 # 判断是否可重试
                 can_retry = attempt + 1 < max_attempts and any(kw in last_err for kw in _retryable)
                 if can_retry:
-                    self._push_log(f"[#{index}] 将换代理/提供商重试...")
-                    wait = 3 * (attempt + 1)
+                    # 根据错误类型给出提示
+                    actions = []
+                    if is_proxy_err and enabled_proxies:
+                        actions.append("换代理")
+                    if is_email_err:
+                        actions.append("换邮箱提供商")
+                    if not actions:
+                        actions.append("重试")
+                    self._push_log(f"[#{index}] 将{'+'.join(actions)}重试...")
+
+                    wait = 2 + attempt * 2  # 2s, 4s, 6s, 8s
                     self._stop_event.wait(wait)
                     continue
                 else:
-                    break  # 不可重试，退出循环
+                    self._push_log(f"[#{index}] 错误不可重试，放弃")
+                    break
 
             finally:
                 mail_client.close()
