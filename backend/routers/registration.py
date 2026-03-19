@@ -16,8 +16,9 @@ async def start_registration(body: RegistrationStart):
     providers = await db.get_providers(enabled_only=True)
     proxies = await db.get_proxies(enabled_only=True)
 
-    if not providers:
-        raise HTTPException(400, "没有启用的邮箱提供商，请先配置")
+    email_mode = settings.get("email_mode", "tempmail_lol")
+    if email_mode == "custom" and not providers:
+        raise HTTPException(400, "自建邮箱模式下没有启用的邮箱提供商，请先配置")
 
     try:
         task_manager.start(
@@ -30,6 +31,7 @@ async def start_registration(body: RegistrationStart):
             email_poll_timeout=settings["email_poll_timeout"],
             delay_min=settings["registration_delay_min"],
             delay_max=settings["registration_delay_max"],
+            email_mode=email_mode,
         )
     except RuntimeError as e:
         raise HTTPException(409, str(e))

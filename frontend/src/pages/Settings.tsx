@@ -9,8 +9,9 @@ export default function SettingsPage() {
     default_proxy: '',
     registration_delay_min: 5,
     registration_delay_max: 30,
-    email_poll_timeout: 35,
+    email_poll_timeout: 120,
     auto_switch_provider: true,
+    email_mode: 'tempmail_lol',
   })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -64,6 +65,35 @@ export default function SettingsPage() {
       <h2 className="text-lg font-semibold">全局设置</h2>
 
       <div className="bg-gray-900 rounded-lg border border-gray-800 p-6 space-y-6">
+        {/* Email mode */}
+        <div>
+          <label className="text-sm text-gray-400 block mb-1.5">邮箱模式</label>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => set('email_mode', 'tempmail_lol')}
+              className={`px-4 py-3 rounded-md border text-sm text-left transition-colors ${
+                form.email_mode === 'tempmail_lol'
+                  ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400'
+                  : 'border-gray-700 bg-gray-800 text-gray-400 hover:border-gray-600'
+              }`}
+            >
+              <div className="font-medium">Tempmail.lol</div>
+              <div className="text-xs mt-0.5 opacity-70">专业临时邮箱服务，成功率高</div>
+            </button>
+            <button
+              onClick={() => set('email_mode', 'custom')}
+              className={`px-4 py-3 rounded-md border text-sm text-left transition-colors ${
+                form.email_mode === 'custom'
+                  ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400'
+                  : 'border-gray-700 bg-gray-800 text-gray-400 hover:border-gray-600'
+              }`}
+            >
+              <div className="font-medium">自建邮箱池</div>
+              <div className="text-xs mt-0.5 opacity-70">使用邮箱提供商页面配置的服务</div>
+            </button>
+          </div>
+        </div>
+
         {/* Thread count */}
         <div>
           <label className="text-sm text-gray-400 block mb-1.5">并发线程数</label>

@@ -104,6 +104,7 @@ class SettingsOut(BaseModel):
     registration_delay_max: int
     email_poll_timeout: int
     auto_switch_provider: bool
+    email_mode: str  # "tempmail_lol" | "custom"
 
 
 class SettingsUpdate(BaseModel):
@@ -114,6 +115,7 @@ class SettingsUpdate(BaseModel):
     registration_delay_max: Optional[int] = None
     email_poll_timeout: Optional[int] = None
     auto_switch_provider: Optional[bool] = None
+    email_mode: Optional[str] = None
 
 
 # ── Registration ──

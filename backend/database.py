@@ -73,7 +73,8 @@ async def init_db():
             registration_delay_min INTEGER NOT NULL DEFAULT 5,
             registration_delay_max INTEGER NOT NULL DEFAULT 30,
             email_poll_timeout INTEGER NOT NULL DEFAULT 120,
-            auto_switch_provider INTEGER NOT NULL DEFAULT 1
+            auto_switch_provider INTEGER NOT NULL DEFAULT 1,
+            email_mode TEXT NOT NULL DEFAULT 'tempmail_lol'
         );
 
         INSERT OR IGNORE INTO settings (id) VALUES (1);
@@ -83,6 +84,8 @@ async def init_db():
     await _migrate_proxies_columns(db)
     # 修正旧数据库中过短的 email_poll_timeout
     await _migrate_email_poll_timeout(db)
+    # 补齐 email_mode 列
+    await _migrate_email_mode(db)
 
 
 async def _migrate_proxies_columns(db: aiosqlite.Connection):
@@ -107,6 +110,15 @@ async def _migrate_email_poll_timeout(db: aiosqlite.Connection):
     row = await cursor.fetchone()
     if row and row[0] < 60:
         await db.execute("UPDATE settings SET email_poll_timeout = 120 WHERE id = 1")
+        await db.commit()
+
+
+async def _migrate_email_mode(db: aiosqlite.Connection):
+    """为旧数据库补齐 settings 表的 email_mode 列"""
+    cursor = await db.execute("PRAGMA table_info(settings)")
+    existing = {row[1] for row in await cursor.fetchall()}
+    if "email_mode" not in existing:
+        await db.execute("ALTER TABLE settings ADD COLUMN email_mode TEXT NOT NULL DEFAULT 'tempmail_lol'")
         await db.commit()
 
 

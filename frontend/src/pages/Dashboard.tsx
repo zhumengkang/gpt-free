@@ -10,7 +10,7 @@ import AccountsTable from '../components/AccountsTable'
 import LogViewer from '../components/LogViewer'
 import ExportDialog from '../components/ExportDialog'
 
-const PAGE_SIZE = 50
+const PAGE_SIZE = 10
 
 export default function Dashboard() {
   const [accounts, setAccounts] = useState<Account[]>([])

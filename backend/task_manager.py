@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 from backend.temp_mail import TempMailClient
+from backend.tempmail_lol import TempMailLolClient
 from backend.registration import run_register
 from backend.proxy_pool import ProxyPool
 
@@ -102,6 +103,7 @@ class TaskManager:
         email_poll_timeout: int,
         delay_min: int,
         delay_max: int,
+        email_mode: str = "tempmail_lol",
     ):
         if self._running:
             raise RuntimeError("注册任务已在运行中")
@@ -119,7 +121,8 @@ class TaskManager:
         self._executor = ThreadPoolExecutor(max_workers=thread_count)
 
         proxy_desc = default_proxy if default_proxy else ("代理池" if proxies else "直连")
-        self._push_log(f"启动注册任务: {count} 个账号, {thread_count} 线程, 网络: {proxy_desc}")
+        email_desc = "Tempmail.lol" if email_mode == "tempmail_lol" else "自建邮箱池"
+        self._push_log(f"启动注册任务: {count} 个账号, {thread_count} 线程, 网络: {proxy_desc}, 邮箱: {email_desc}")
 
         for i in range(count):
             self._executor.submit(
@@ -132,6 +135,7 @@ class TaskManager:
                 email_poll_timeout,
                 delay_min,
                 delay_max,
+                email_mode,
             )
 
     def stop(self):
@@ -155,6 +159,7 @@ class TaskManager:
         email_poll_timeout: int,
         delay_min: int,
         delay_max: int,
+        email_mode: str = "tempmail_lol",
     ):
         if self._stop_event.is_set():
             return
@@ -210,6 +215,8 @@ class TaskManager:
             "invalid_auth_step",
             "Invalid authorization step",
             "代理不可用",
+            "多次限流",
+            "429",
         ]
 
         # 需要换代理的错误（代理相关问题）
@@ -235,6 +242,9 @@ class TaskManager:
             "not supported",
             "验证码超时",
             "获取验证码超时",
+            "多次限流",
+            "429",
+            "创建邮箱失败",
         ]
 
         max_attempts = 5  # 增加到5次
@@ -267,9 +277,10 @@ class TaskManager:
 
             # 智能选择邮箱提供商：优先选失败次数少的，避免重复使用已失败的
             sorted_providers = self._get_sorted_providers(enabled_providers)
-            # 优先选没用过的
+            # 优先选没用过的，从中随机选一个
             unused = [p for p in sorted_providers if p["name"] not in used_providers]
-            provider = unused[0] if unused else sorted_providers[0]
+            pool = unused if unused else sorted_providers
+            provider = random.choice(pool)
 
             self._push_log(f"[#{index}] 使用邮箱提供商: {provider['name']}")
 
@@ -291,7 +302,11 @@ class TaskManager:
                     except Exception as e:
                         self._push_log(f"[#{index}] DB 写入失败: {str(e)[:100]}")
 
-            mail_client = TempMailClient(provider, enabled_providers)
+            # 根据 email_mode 选择邮箱客户端
+            if email_mode == "tempmail_lol":
+                mail_client = TempMailLolClient(proxy=proxy_url)
+            else:
+                mail_client = TempMailClient(provider, enabled_providers)
             mail_client.set_log_fn(lambda msg: self._push_log(f"[#{index}] {msg}"))
             try:
                 result = run_register(
@@ -332,6 +347,7 @@ class TaskManager:
                     self._completed += 1
                     self._success += 1
                 self._push_log(f"[#{index}] 注册成功: {result.get('email')}")
+                self._check_done()
                 return  # 成功，退出重试循环
 
             except Exception as e:

@@ -48,6 +48,7 @@ export interface Settings {
   registration_delay_max: number
   email_poll_timeout: number
   auto_switch_provider: boolean
+  email_mode: string  // "tempmail_lol" | "custom"
 }
 
 export interface RegStatus {

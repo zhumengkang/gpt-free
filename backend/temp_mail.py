@@ -144,10 +144,7 @@ class TempMailClient:
         start = time.time()
         attempt = 0
         last_error: str | None = None
-        seen_ids: set[str] = set()
-
-        # 第一次轮询记录已有邮件 ID，跳过旧邮件
-        first_poll = True
+        found_codes: set[str] = set()
 
         while True:
             attempt += 1
@@ -182,36 +179,10 @@ class TempMailClient:
                 if not results:
                     if attempt == 1:
                         self._log("邮箱为空，等待邮件到达...")
-                    first_poll = False
                     continue
 
-                # 第一次轮询：记录已有邮件 ID，标记为旧邮件
-                if first_poll:
-                    for mail in results:
-                        mail_id = mail.get("id") or mail.get("_id") or mail.get("messageId") or ""
-                        if mail_id:
-                            seen_ids.add(str(mail_id))
-                    if seen_ids:
-                        self._log(f"跳过 {len(seen_ids)} 封旧邮件")
-                    first_poll = False
-                    continue
-
-                # 遍历新邮件
-                new_mails = []
-                for mail in results:
-                    mail_id = mail.get("id") or mail.get("_id") or mail.get("messageId") or ""
-                    if mail_id and str(mail_id) in seen_ids:
-                        continue
-                    new_mails.append(mail)
-                    if mail_id:
-                        seen_ids.add(str(mail_id))
-
-                if not new_mails:
-                    continue
-
-                self._log(f"收到 {len(new_mails)} 封新邮件")
-
-                for mail_idx, mail in enumerate(new_mails):
+                # 直接遍历所有邮件，检查内容
+                for mail_idx, mail in enumerate(results):
                     # 打印邮件基本信息
                     subject = mail.get("subject", "")
                     from_addr = mail.get("from", mail.get("sender", ""))
