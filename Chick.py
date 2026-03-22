@@ -480,11 +480,14 @@ def run_register(proxy: Optional[str], password: str) -> Optional[str]:
         # 获取 workspace
         _log_step("获取 workspace 信息")
         auth_cookie = s.cookies.get("oai-client-auth-session")
+
         if not auth_cookie:
             print("[-] 未能获取到授权 Cookie")
+            print(auth_cookie)
             return None
 
         auth_json = _decode_jwt_segment(auth_cookie.split(".")[0])
+        print(auth_json)
         workspaces = auth_json.get("workspaces") or []
         if not workspaces:
             print("[-] 授权 Cookie 里没有 workspace 信息")

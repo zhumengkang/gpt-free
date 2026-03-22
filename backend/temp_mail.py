@@ -7,6 +7,21 @@ import time
 import httpx
 
 
+def _mask_secret(value: str | None, kind: str = "secret") -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return "(空)"
+    if kind == "jwt":
+        return f"len={len(raw)}, segments={len(raw.split('.'))}"
+    if kind in {"otp", "code"}:
+        if len(raw) <= 4:
+            return f"{raw[:1]}...{raw[-1:]}" if len(raw) > 1 else "*"
+        return f"{raw[:2]}...{raw[-2:]}"
+    if len(raw) <= 8:
+        return f"{raw[:2]}...{raw[-2:]}"
+    return f"{raw[:4]}...{raw[-4:]}"
+
+
 class TempMailClient:
     """临时邮箱客户端，支持自动切换提供商"""
 
@@ -17,15 +32,23 @@ class TempMailClient:
         self.jwt: str | None = None
         self.email_address: str | None = None
         self._log_fn = None
+        self._raw_log_fn = None
         # 记录本次会话中失败的提供商
         self._failed_providers: set[str] = set()
 
     def set_log_fn(self, fn):
         self._log_fn = fn
 
+    def set_raw_log_fn(self, fn):
+        self._raw_log_fn = fn
+
     def _log(self, msg: str):
         if self._log_fn:
             self._log_fn(f"[邮箱] {msg}")
+
+    def _raw_log(self, msg: str):
+        if self._raw_log_fn:
+            self._raw_log_fn(f"[邮箱] {msg}")
 
     def _headers(self) -> dict:
         return {
@@ -100,6 +123,7 @@ class TempMailClient:
             raise RuntimeError("没有可用域名")
 
         domain = random.choice(domains)
+        self._log(f"选中域名: {domain}")
         name = "".join(random.choices(string.ascii_lowercase, k=random.randint(8, 12)))
 
         url = f"{self.provider['base_url']}/api/new_address"
@@ -135,7 +159,8 @@ class TempMailClient:
 
         self._log(f"等待验证码 (超时: {timeout}s, 邮箱: {self.email_address})")
         self._log(f"查询地址: {url}")
-        self._log(f"JWT: {self.jwt}")
+        self._log(f"JWT 已获取({_mask_secret(self.jwt, 'jwt')})")
+        self._raw_log(f"等待验证码原始上下文: email={self.email_address}, url={url}, jwt={self.jwt}")
 
         # 先等 5 秒再开始查，邮件不会那么快到
         self._log("等待 5s 后开始查收邮件...")
@@ -213,7 +238,8 @@ class TempMailClient:
                         self._log(f"收到匹配邮件 (含 '{keyword}')")
                         code = self._extract_code(content)
                         if code:
-                            self._log(f"验证码: {code}")
+                            self._log(f"验证码已提取: {_mask_secret(code, 'otp')}")
+                            self._raw_log(f"验证码原文: {code}")
                             return code
                         else:
                             last_error = "邮件中未找到验证码"
@@ -222,7 +248,8 @@ class TempMailClient:
                         # 兜底：即使没有关键词，也尝试提取（和 Rust 版本一致）
                         code = self._extract_code(content)
                         if code:
-                            self._log(f"未检测到关键词，但提取到疑似验证码: {code}")
+                            self._log(f"未检测到关键词，但提取到疑似验证码: {_mask_secret(code, 'otp')}")
+                            self._raw_log(f"验证码原文(无关键词命中): {code}")
                             return code
 
             except httpx.TimeoutException:

@@ -6,6 +6,21 @@ from typing import Any
 from curl_cffi import requests
 
 
+def _mask_secret(value: str | None, kind: str = "secret") -> str:
+    raw = str(value or "").strip()
+    if not raw:
+        return "(空)"
+    if kind == "token":
+        return f"len={len(raw)}"
+    if kind in {"otp", "code"}:
+        if len(raw) <= 4:
+            return f"{raw[:1]}...{raw[-1:]}" if len(raw) > 1 else "*"
+        return f"{raw[:2]}...{raw[-2:]}"
+    if len(raw) <= 8:
+        return f"{raw[:2]}...{raw[-2:]}"
+    return f"{raw[:4]}...{raw[-4:]}"
+
+
 TEMPMAIL_BASE = "https://api.tempmail.lol/v2"
 
 
@@ -18,15 +33,23 @@ class TempMailLolClient:
         self._token: str | None = None
         self.email_address: str | None = None
         self._log_fn = None
+        self._raw_log_fn = None
         # 兼容 TempMailClient 的 provider 属性
         self.provider = {"name": "Tempmail.lol", "base_url": TEMPMAIL_BASE, "origin": "https://tempmail.lol"}
 
     def set_log_fn(self, fn):
         self._log_fn = fn
 
+    def set_raw_log_fn(self, fn):
+        self._raw_log_fn = fn
+
     def _log(self, msg: str):
         if self._log_fn:
             self._log_fn(f"[邮箱] {msg}")
+
+    def _raw_log(self, msg: str):
+        if self._raw_log_fn:
+            self._raw_log_fn(f"[邮箱] {msg}")
 
     def create_email(self) -> str:
         """创建 Tempmail.lol 邮箱，429 限流时自动等待重试"""
@@ -87,7 +110,8 @@ class TempMailLolClient:
         seen_ids: set = set()
 
         self._log(f"等待验证码 (超时: {timeout}s, 邮箱: {self.email_address})")
-        self._log(f"Tempmail.lol token: {self._token}")
+        self._log(f"Tempmail.lol token 已获取({_mask_secret(self._token, 'token')})")
+        self._raw_log(f"Tempmail.lol 原始上下文: email={self.email_address}, token={self._token}")
 
         # 先等 5 秒
         self._log("等待 5s 后开始查收邮件...")
@@ -164,7 +188,8 @@ class TempMailLolClient:
                     m = re.search(regex, content)
                     if m:
                         code = m.group(1)
-                        self._log(f"验证码: {code}")
+                        self._log(f"验证码已提取: {_mask_secret(code, 'otp')}")
+                        self._raw_log(f"验证码原文: {code}")
                         return code
 
             except requests.errors.RequestsError as e:

@@ -19,3 +19,6 @@ STATIC_DIR = os.path.join(BASE_DIR, "frontend", "dist")
 
 # API 认证（可选）- 环境变量 GPT_FREE_API_KEY 或留空不启用
 API_KEY = os.environ.get("GPT_FREE_API_KEY", "")
+
+# 本地原始调试日志（仅本机文件，不走 WebSocket）- 默认开启
+RAW_DEBUG_LOG_PATH = os.environ.get("GPT_FREE_RAW_DEBUG_LOG_PATH", "").strip() or os.path.join(BASE_DIR, "debug_raw.log")

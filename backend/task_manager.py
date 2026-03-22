@@ -1,6 +1,7 @@
 """线程池 + 日志队列管理 - 增强版：智能重试 + 代理健康追踪"""
 import asyncio
 import json
+import os
 import random
 import secrets
 import string
@@ -13,6 +14,7 @@ from backend.temp_mail import TempMailClient
 from backend.tempmail_lol import TempMailLolClient
 from backend.registration import run_register
 from backend.proxy_pool import ProxyPool
+from backend.config import RAW_DEBUG_LOG_PATH
 
 
 def _generate_password(length: int = 16) -> str:
@@ -54,6 +56,22 @@ class TaskManager:
         # 失败的邮箱提供商追踪 {provider_name: fail_count}
         self._provider_fails: dict[str, int] = {}
         self._provider_fails_lock = threading.Lock()
+        self._raw_debug_log_path = RAW_DEBUG_LOG_PATH
+        self._raw_debug_lock = threading.Lock()
+
+    def _push_raw_debug(self, msg: str):
+        if not self._raw_debug_log_path:
+            return
+        try:
+            ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            directory = os.path.dirname(self._raw_debug_log_path)
+            if directory:
+                os.makedirs(directory, exist_ok=True)
+            with self._raw_debug_lock:
+                with open(self._raw_debug_log_path, "a", encoding="utf-8") as f:
+                    f.write(f"[{ts}] {msg}\n")
+        except Exception:
+            pass
 
     def set_log_queue(self, queue: asyncio.Queue, loop: asyncio.AbstractEventLoop):
         self._log_queue = queue
@@ -308,12 +326,14 @@ class TaskManager:
             else:
                 mail_client = TempMailClient(provider, enabled_providers)
             mail_client.set_log_fn(lambda msg: self._push_log(f"[#{index}] {msg}"))
+            mail_client.set_raw_log_fn(lambda msg: self._push_raw_debug(f"[#{index}] {msg}"))
             try:
                 result = run_register(
                     password=actual_password,
                     proxy=proxy_url,
                     mail_client=mail_client,
                     log_fn=lambda msg: self._push_log(f"[#{index}] {msg}"),
+                    raw_log_fn=lambda msg: self._push_raw_debug(f"[#{index}] {msg}"),
                     email_poll_timeout=email_poll_timeout,
                 )
 
