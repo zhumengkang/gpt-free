@@ -67,7 +67,7 @@ async def init_db():
 
         CREATE TABLE IF NOT EXISTS settings (
             id INTEGER PRIMARY KEY CHECK (id = 1),
-            thread_count INTEGER NOT NULL DEFAULT 5,
+            thread_count INTEGER NOT NULL DEFAULT 20,
             default_password TEXT NOT NULL DEFAULT '',
             default_proxy TEXT NOT NULL DEFAULT 'http://127.0.0.1:7897',
             registration_delay_min INTEGER NOT NULL DEFAULT 5,

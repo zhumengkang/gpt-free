@@ -4,7 +4,7 @@ import { useStore } from '../store'
 
 export default function SettingsPage() {
   const [form, setForm] = useState<Settings>({
-    thread_count: 5,
+    thread_count: 20,
     default_password: '',
     default_proxy: '',
     registration_delay_min: 5,
@@ -25,8 +25,8 @@ export default function SettingsPage() {
   }, [])
 
   const handleSave = async () => {
-    if (form.thread_count < 1 || form.thread_count > 20) {
-      addToast('error', '线程数需在 1-20 之间')
+    if (form.thread_count < 1 || form.thread_count > 50) {
+      addToast('error', '线程数需在 1-50 之间')
       return
     }
     if (form.registration_delay_min > form.registration_delay_max) {
@@ -100,12 +100,12 @@ export default function SettingsPage() {
           <input
             type="number"
             min={1}
-            max={20}
+            max={50}
             value={form.thread_count}
-            onChange={(e) => set('thread_count', Math.max(1, Math.min(20, Number(e.target.value))))}
+            onChange={(e) => set('thread_count', Math.max(1, Math.min(50, Number(e.target.value))))}
             className="w-full bg-gray-800 border border-gray-700 rounded-md px-3 py-2 text-sm focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
           />
-          <p className="text-xs text-gray-600 mt-1">同时运行的注册线程数量 (1-20)</p>
+          <p className="text-xs text-gray-600 mt-1">同时运行的注册线程数量 (1-50)</p>
         </div>
 
         {/* Password */}

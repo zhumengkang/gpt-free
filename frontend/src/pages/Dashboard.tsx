@@ -194,10 +194,9 @@ export default function Dashboard() {
             <input
               type="number"
               min={1}
-              max={100}
               value={count}
-              onChange={(e) => setCount(Math.max(1, Math.min(100, Number(e.target.value))))}
-              className="w-20 bg-gray-800 border border-gray-700 rounded-md px-2.5 py-1.5 text-sm focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+              onChange={(e) => setCount(Math.max(1, Number(e.target.value)))}
+              className="w-24 bg-gray-800 border border-gray-700 rounded-md px-2.5 py-1.5 text-sm focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
             />
           </div>
 

@@ -9,8 +9,8 @@ router = APIRouter(prefix="/api/registration", tags=["registration"])
 
 @router.post("/start")
 async def start_registration(body: RegistrationStart):
-    if body.count < 1 or body.count > 100:
-        raise HTTPException(400, "注册数量需在 1-100 之间")
+    if body.count < 1:
+        raise HTTPException(400, "注册数量需大于 0")
 
     settings = await db.get_settings()
     providers = await db.get_providers(enabled_only=True)
